@@ -11,7 +11,16 @@ class ProductController extends BaseController
 	{
 		$this->data['active'] = 'Product';
 		$this->data['controller'] = 'App\Controllers\ProductController';
-		$this->rules = [];
+		$this->rules = [
+			'brand_id' => 'required|integer',
+			'category_id' => 'required|integer',
+			'name' => 'required',
+			'description' => 'permit_empty',
+			'rate' => 'required|integer',
+			'quantity' => 'required|integer',
+			'status' => 'required|in_list[Available,Not Available]',
+			'image' => 'permit_empty|uploaded[image]|mime_in[image,image/jpg,image/jpeg,image/gif,image/png,image/webp]'
+		];
 		$this->model = new Product();
 	}
 	public function _wrap()
@@ -21,6 +30,7 @@ class ProductController extends BaseController
 			'brand_id' => $request->getPost('brand_id'),
 			'category_id' => $request->getPost('category_id'),
 			'name' => $request->getPost('name'),
+			'description' => $request->getPost('description'),
 			'rate' => $request->getPost('rate'),
 			'quantity' => $request->getPost('quantity'),
 			'status' => $request->getPost('status'),
@@ -55,7 +65,12 @@ class ProductController extends BaseController
 	 */
 	public function show($id = null)
 	{
-		//
+		$this->data['data'] = $this->model->where('products.id', $id)
+		->select('products.*, brands.name as brands_name, categories.name as categories_name')
+		->join('brands', 'brands.id = products.brand_id')
+		->join('categories', 'categories.id = products.category_id')
+		->first();
+		return view('product/show', $this->data);
 	}
 
 	/**
@@ -65,6 +80,10 @@ class ProductController extends BaseController
 	 */
 	public function new()
 	{
+		$data = $this->session->getFlashdata();
+		unset($data['validation']);
+		$this->data['data'] = $data;
+
 		$category = new Category();
 		$brand = new Brand();
 		$this->data['category'] = $category->find();
@@ -80,6 +99,15 @@ class ProductController extends BaseController
 	public function create()
 	{
 		$data = $this->_wrap();
+		if(!isset($data['id'])){
+			$this->rules['image'] = 'uploaded[image]|mime_in[image,image/jpg,image/jpeg,image/gif,image/png,image/webp]';
+		}
+		$validate = $this->validate($this->rules);
+		if(!$validate){
+			$this->session->setFlashdata('validation', $this->validator->getErrors());
+			$this->session->setFlashdata($_POST);
+			return redirect()->back();
+		}
 		$img = $this->request->getFile('image');
 		if($img->isValid()){
 	        $path = '/uploads/' . date('Ymd');
@@ -132,7 +160,17 @@ class ProductController extends BaseController
 	{
 		$model = $this->model->where('id', $id);
 	    unlink(ROOTPATH . 'public' . $model->first()['image']);
-		$model->delete();
+	    $delete = new Product();
+		$delete->where('id', $id)->delete();
 		return redirect()->back();
+	}
+	public function search()
+	{
+		$model = $this->model
+			->like('id', $_GET['term'])
+			->orLike('name', $_GET['term'])
+			->limit(10)
+			->find();
+		return json_encode($model);
 	}
 }

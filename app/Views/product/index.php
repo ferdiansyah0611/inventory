@@ -48,7 +48,7 @@ Product
 							<th scope="col" class="sort">Rate</th>
 							<th scope="col" class="sort">Created</th>
 							<?php if ($user['role'] == 'admin'): ?>
-								<th scope="col" class="sort">Action</th>
+								<th scope="col" class="sort"></th>
 							<?php endif ?>
 						</tr>
 					</thead>
@@ -56,7 +56,7 @@ Product
 						<?php foreach ($list as $key => $data): ?>
 						<tr>
 							<th scope="row">
-								<?= $data->id ?>
+								<a href="<?= route_to($controller . '::show', $data->id) ?>"><?= $data->id ?></a>
 							</th>
 							<td>
 								<?= $data->name ?>
@@ -74,13 +74,25 @@ Product
 								<?= $data->created_at ?>
 							</td>
 							<?php if ($user['role'] == 'admin'): ?>
-							<td>
-								<a href="<?= route_to($controller . '::edit', $data->id) ?>" class="btn btn-sm btn-primary">Edit</a>
-								<button data-id="<?= $data->id?>" type="submit" class="btn btn-sm btn-danger deleted">Remove</button>
-							</td>
+								<td class="text-right">
+				                    <div class="dropdown">
+				                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				                          <i class="fas fa-ellipsis-v"></i>
+				                        </a>
+				                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+				                            <a class="dropdown-item" href="<?= route_to($controller . '::edit', $data->id) ?>">Edit</a>
+				                            <a class="dropdown-item pointer deleted" data-id="<?= $data->id?>">Remove</a>
+				                        </div>
+				                    </div>
+				                </td>
 							<?php endif ?>
 						</tr>
 						<?php endforeach; ?>
+						<?php if (count($list) == 0): ?>
+							<tr>
+								<td>no records</td>
+							</tr>
+						<?php endif ?>
 					</tbody>
 				</table>
 			</div>
@@ -96,7 +108,7 @@ Product
 <script>
 $(document).ready(() => {
 	const deleted = () => {
-		$('button.deleted').click(function(e){
+		$('a.deleted').click(function(e){
 			var id = $(this).data('id')
 			var url = `<?= route_to($controller . '::delete', '${id}') ?>`
 			$.ajax({

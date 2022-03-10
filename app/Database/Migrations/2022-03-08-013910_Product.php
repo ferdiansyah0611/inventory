@@ -27,6 +27,10 @@ class Product extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
+            'description' => [
+                'type' => 'LONGTEXT',
+                'null' => true
+            ],
             'image' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255

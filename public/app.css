@@ -6,3 +6,6 @@
     width: calc(100% - 250px);
     height: 100vh;
 }
+.pointer{
+    cursor: pointer;
+}

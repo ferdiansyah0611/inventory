@@ -16,11 +16,11 @@ class Order extends Model
 	protected $protectFields        = true;
 	protected $allowedFields        = [
 		'product_id',
-		'client_name',
-		'client_contact',
+		'customer_id',
 		'quantity',
 		'discount',
 		'status',
+		'note',
 		'price_start',
 		'price_total',
 		'payment_type',
@@ -60,13 +60,14 @@ class Order extends Model
 		$page = intval(isset($_GET['page']) ? $_GET['page'] : 1);
 		if($page){
 			$builder = $this->db->table('orders')
-			->select('orders.*, products.name as products_name')
+			->select('orders.*, products.name as products_name, users.username as customer_name')
+			->join('users', 'users.id = orders.customer_id')
 			->join('products', 'products.id = orders.product_id');
 			if(isset($_GET['search'])){
 				$builder->like('orders.id', $_GET['search']);
 				$builder->orLike('orders.product_id', $_GET['search']);
 				$builder->orLike('products.name', $_GET['search']);
-				$builder->orLike('orders.client_name', $_GET['search']);
+				$builder->orLike('users.username', $_GET['search']);
 				$builder->orLike('orders.status', $_GET['search']);
 			}
 			// dd($builder->countAllResults());
@@ -91,7 +92,9 @@ class Order extends Model
 			$date->modify('-'. $i .' month');
 			$month = $date->format('M');
 			$listmonth[$i] = $month;
-			$value[$month] = $this->db->table('orders')->where('MONTH(created_at)', $date->format('n'))->selectSum('price_total')->get()->getResultObject();
+			$value[$month] = $this->db->table('orders')->where('MONTH(created_at)', $date->format('n'))->selectSum('price_total')
+				->where('payment_status', 'Success')
+				->get()->getResultObject();
 		}
 		// dd($value);
 		return [

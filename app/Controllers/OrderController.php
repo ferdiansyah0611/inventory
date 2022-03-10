@@ -10,7 +10,18 @@ class OrderController extends BaseController
 	{
 		$this->data['active'] = 'Order';
 		$this->data['controller'] = 'App\Controllers\OrderController';
-		$this->rules = [];
+		$this->rules = [
+			'product_id' => 'required|integer',
+			'customer_id' => 'required|integer',
+			'quantity' => 'required|integer',
+			'discount' => 'permit_empty|integer',
+			'status' => 'required|in_list[Done,Confirm,Delivery,Cancel]',
+			'note' => 'permit_empty',
+			'payment_type' => 'required',
+			'payment_status' => 'required',
+			'payment_place' => 'permit_empty',
+			'order_at' => 'required',
+		];
 		$this->model = new Order();
 	}
 	public function _wrap()
@@ -18,11 +29,11 @@ class OrderController extends BaseController
 		$request = $this->request;
 		$data = [
 			'product_id' => $request->getPost('product_id'),
-			'client_name' => $request->getPost('client_name'),
-			'client_contact' => $request->getPost('client_contact'),
+			'customer_id' => $request->getPost('customer_id'),
 			'quantity' => $request->getPost('quantity'),
 			'discount' => $request->getPost('discount'),
 			'status' => $request->getPost('status'),
+			'note' => $request->getPost('note'),
 			'payment_type' => $request->getPost('payment_type'),
 			'payment_status' => $request->getPost('payment_status'),
 			'payment_place' => $request->getPost('payment_place'),
@@ -63,7 +74,12 @@ class OrderController extends BaseController
 	 */
 	public function show($id = null)
 	{
-		//
+		$this->data['data'] = $this->model->where('orders.id', $id)
+		->select('orders.*, products.name as products_name, products.image as products_image, users.username as customer_name, users.email as customer_email')
+		->join('users', 'users.id = orders.customer_id')
+		->join('products', 'products.id = orders.product_id')
+		->first();
+		return view('order/show', $this->data);
 	}
 
 	/**
@@ -74,6 +90,9 @@ class OrderController extends BaseController
 	public function new()
 	{
 		$this->_product();
+		$data = $this->session->getFlashdata();
+		unset($data['validation']);
+		$this->data['data'] = $data;
 		return view('order/create', $this->data);
 	}
 
@@ -84,6 +103,12 @@ class OrderController extends BaseController
 	 */
 	public function create()
 	{
+		$validate = $this->validate($this->rules);
+		if(!$validate){
+			$this->session->setFlashdata('validation', $this->validator->getErrors());
+			$this->session->setFlashdata($_POST);
+			return redirect()->back();
+		}
 		$data = $this->_wrap();
 		$product = new Product();
 		$productUpdate = new Product();
@@ -111,7 +136,11 @@ class OrderController extends BaseController
 	public function edit($id = null)
 	{
 		$this->_product();
-		$this->data['data'] = $this->model->where('id', $id)->first();
+		$this->data['data'] = $this->model->where('orders.id', $id)
+			->select('orders.*, products.name as products_name, users.username as customer_name')
+			->join('products', 'products.id = orders.product_id')
+			->join('users', 'users.id = orders.customer_id')
+			->first();
 		return view('order/create', $this->data);
 	}
 

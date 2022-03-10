@@ -9,7 +9,10 @@ class CategoryController extends BaseController
 	{
 		$this->data['active'] = 'Category';
 		$this->data['controller'] = 'App\Controllers\CategoryController';
-		$this->rules = [];
+		$this->rules = [
+			'name' => 'required|min_length[3]',
+			'status' => 'required'
+		];
 		$this->model = new Category();
 	}
 	public function _wrap()
@@ -60,6 +63,9 @@ class CategoryController extends BaseController
 	 */
 	public function new()
 	{
+		$data = $this->session->getFlashdata();
+		unset($data['validation']);
+		$this->data['data'] = $data;
 		return view('brand/create', $this->data);
 	}
 
@@ -70,6 +76,12 @@ class CategoryController extends BaseController
 	 */
 	public function create()
 	{
+		$validate = $this->validate($this->rules);
+		if(!$validate){
+			$this->session->setFlashdata('validation', $this->validator->getErrors());
+			$this->session->setFlashdata($_POST);
+			return redirect()->back();
+		}
 		$data = $this->_wrap();
 		$this->model->save($data);
 		return redirect()->back();

@@ -43,7 +43,7 @@ class AuthController extends BaseController
 				$this->session->set($data);
 				return redirect()->to('/');
 			}
-			$this->session->setFlashdata('error', 'Password is wrong.');
+			$this->session->setFlashdata('validation', ['Password not match.']);
 			return view('auth/login');
 		}
 	}
@@ -84,7 +84,7 @@ class AuthController extends BaseController
 				$this->session->setFlashdata('success', 'Successfuly registered. Signin now!');
 				return redirect()->to('/auth/signin');
 			}
-			$this->session->setFlashdata('error', 'User has registered.');
+			$this->session->setFlashdata('validation', ['User has registered.']);
 			return view('auth/register');
 		}
 	}

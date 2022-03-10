@@ -17,7 +17,8 @@ class ReportController extends BaseController
     {
     	$order = new Order();
     	$data['data'] = $order->where('orders.id', $id)
-    		->select('orders.*, products.name as products_name')
+    		->select('orders.*, products.name as products_name, users.username as customer_name, users.email as customer_email')
+            ->join('users', 'users.id = orders.customer_id')
 			->join('products', 'products.id = orders.product_id')->first();
 		$date = date_create(date('Y-m-d'));
 		$date->modify('+1 month');

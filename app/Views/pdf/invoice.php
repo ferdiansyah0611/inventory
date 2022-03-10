@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>A simple, clean, and responsive HTML invoice template</title>
+        <title>Invoice</title>
         <style>
         .invoice-box {
         max-width: 800px;
@@ -111,8 +111,8 @@
                                 </td>
                                 <td>
                                     -<br />
-                                    <?= $data['client_name'] ?><br />
-                                    <?= $data['client_contact'] ?>
+                                    <?= $data['customer_name'] ?><br />
+                                    <?= $data['customer_email'] ?>
                                 </td>
                             </tr>
                         </table>

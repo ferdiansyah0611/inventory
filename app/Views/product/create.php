@@ -76,14 +76,18 @@ Create Product
 								<input value="<?= isset($data['quantity']) ? $data['quantity']: '' ?>" class="form-control form-control-alternative" type="number" placeholder="Required" required name="quantity">
 							</div>
 						</div>
-						<!-- <php if (!isset($data['id'])): ?> -->
-							<div class="col-12">
-								<div class="form-group">
-									<label for="image" class="form-control-label">Image</label>
-									<input class="form-control form-control-alternative" type="file" <?= !isset($data['id']) ? 'required ': '' ?>name="image">
-								</div>
+						<div class="col-12">
+							<div class="form-group">
+								<label for="description" class="form-control-label">Description</label>
+								<textarea class="form-control form-control-alternative" name="description" id="description" rows="3"><?= isset($data['description']) ? $data['description']: '' ?></textarea>
 							</div>
-						<!-- <php endif ?> -->
+						</div>
+						<div class="col-12">
+							<div class="form-group">
+								<label for="image" class="form-control-label">Image</label>
+								<input accept="image*" class="form-control form-control-alternative" type="file" <?= !isset($data['id']) ? 'required ': '' ?>name="image">
+							</div>
+						</div>
 						<div class="col-12">
 							<button type="submit" class="btn btn-primary">Save</button>
 						</div>

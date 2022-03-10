@@ -19,14 +19,18 @@ class Order extends Migration
                 'type' => 'INT',
                 'constraint' => 11
             ],
-            'client_name' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255
+            'customer_id' => [
+                'type' => 'INT',
+                'constraint' => 11
             ],
-            'client_contact' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255
-            ],
+            // 'client_name' => [
+            //     'type' => 'VARCHAR',
+            //     'constraint' => 255
+            // ],
+            // 'client_contact' => [
+            //     'type' => 'VARCHAR',
+            //     'constraint' => 255
+            // ],
             'quantity' => [
                 'type' => 'INT',
                 'constraint' => 11
@@ -39,6 +43,10 @@ class Order extends Migration
             'status' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255
+            ],
+            'note' => [
+                'type' => 'LONGTEXT',
+                'null' => true
             ],
             'payment_type' => [
                 'type' => 'VARCHAR',

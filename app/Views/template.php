@@ -27,6 +27,7 @@
     <!-- Argon CSS -->
     <link rel="stylesheet" href="<?= base_url('argon') ?>/assets/css/argon.css?v=1.2.0" type="text/css">
     <link rel="stylesheet" href="<?= base_url() ?>/app.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
     <!-- Sidenav -->
@@ -95,15 +96,18 @@
         <div class="container-fluid">
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Search form -->
-            <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
-              <form action="" class="form-group mb-0">
+            <form action="" class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main">
+              <div class="form-group mb-0">
                 <div class="input-group input-group-alternative input-group-merge">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
                   </div>
                   <input class="form-control" placeholder="Search" type="text" name="search" value="<?= isset($_GET['search']) ? $_GET['search']: '' ?>">
                 </div>
-              </form>
+              </div>
+              <button type="button" class="close" data-action="search-close" data-target="#navbar-search-main" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
             </form>
             <!-- Navbar links -->
             <ul class="navbar-nav align-items-center  ml-md-auto ">
@@ -172,7 +176,7 @@
                   <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://ferdianysyah.web.app" class="nav-link" target="_blank">About Us</a>
+                  <a href="https://ferdianyah.web.app" class="nav-link" target="_blank">About Us</a>
                 </li>
                 <li class="nav-item">
                   <a href="http://ferdiansyah-blog.herokuapp.com/" class="nav-link" target="_blank">Blog</a>
@@ -188,6 +192,7 @@
     <script src="<?= base_url('argon') ?>/assets/vendor/js-cookie/js.cookie.js"></script>
     <script src="<?= base_url('argon') ?>/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
     <script src="<?= base_url('argon') ?>/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Optional JS -->
     <script src="<?= base_url('argon') ?>/assets/vendor/chart.js/dist/Chart.min.js"></script>
     <script src="<?= base_url('argon') ?>/assets/vendor/chart.js/dist/Chart.extension.js"></script>

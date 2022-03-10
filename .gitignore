@@ -2,7 +2,7 @@
 # Operating Specific Junk Files
 #-------------------------
 /vendor
-/public/uploads
+/public/upload
 # OS X
 .DS_Store
 .AppleDouble

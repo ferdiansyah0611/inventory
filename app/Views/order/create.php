@@ -28,38 +28,29 @@ Create Order
 						<?php if(isset($data['id'])): ?>
 						<input type="hidden" name="id" value="<?= $data['id']?>">
 						<?php endif; ?>
-						
+						<input required type="hidden" name="product_id" value="<?= isset($data['product_id']) ? $data['product_id']: '' ?>">
+						<input required type="hidden" name="customer_id" value="<?= isset($data['customer_id']) ? $data['customer_id']: '' ?>">
 						<div class="col-6">
 							<div class="form-group">
-								<label for="product_id" class="form-control-label">Product</label>
-								<select name="product_id" id="product_id" class="form-control form-control-alternative" required>
-									<option value="">-- SELECT --</option>
-									<?php foreach ($product as $key => $value): ?>
-									<option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
-									<?php endforeach ?>
-								</select>
+								<label for="product-complete" class="form-control-label">Product</label>
+								<input value="<?= isset($data['products_name']) ? $data['products_name']: '' ?>" class="form-control form-control-alternative" type="text" id="product-complete" placeholder="Required" required>
 							</div>
 						</div>
 						<div class="col-6">
 							<div class="form-group">
 								<label for="status" class="form-control-label">Status</label>
-								<select name="status" id="status" class="form-control form-control-alternative" required>
+								<select name="status" id="status" class="form-control form-control-alternative">
 									<option value="">-- SELECT --</option>
-									<option value="Not Available">Not Available</option>
-									<option value="Available">Available</option>
+									<?php foreach (array('Done' , 'Confirm', 'Delivery', 'Cancel') as $key => $value): ?>
+										<option value="<?= $value ?>"><?= $value ?></option>
+									<?php endforeach ?>
 								</select>
 							</div>
 						</div>
-						<div class="col-6">
+						<div class="col-12">
 							<div class="form-group">
-								<label for="client_name" class="form-control-label">Client Name</label>
-								<input id="client_name" value="<?= isset($data['client_name']) ? $data['client_name']: '' ?>" type="text" class="form-control form-control-alternative" name="client_name" placeholder="Required" required>
-							</div>
-						</div>
-						<div class="col-6">
-							<div class="form-group">
-								<label for="client_contact" class="form-control-label">Client Contact</label>
-								<input id="client_contact" value="<?= isset($data['client_contact']) ? $data['client_contact']: '' ?>" type="text" class="form-control form-control-alternative" name="client_contact" placeholder="Required" required>
+								<label for="customer-complete" class="form-control-label">Customer</label>
+								<input id="customer-complete" value="<?= isset($data['customer_name']) ? $data['customer_name']: '' ?>" type="text" class="form-control form-control-alternative" placeholder="Required" required>
 							</div>
 						</div>
 						<div class="col-12">
@@ -68,18 +59,18 @@ Create Order
 								<input value="<?= isset($data['quantity']) ? $data['quantity']: '' ?>" class="form-control form-control-alternative" type="number" placeholder="Required" required name="quantity">
 							</div>
 						</div>
-						<div class="col-4">
+						<div class="col-md-4">
 							<div class="form-group">
 								<label for="payment_type" class="form-control-label">Payment Type</label>
 								<select name="payment_type" id="payment_type" class="form-control form-control-alternative" required>
 									<option value="">-- SELECT --</option>
-									<?php foreach (array('Not Payment', 'Credit Card', 'BRI') as $key => $value): ?>
+									<?php foreach (array('Without Payment', 'Credit Card', 'BRI') as $key => $value): ?>
 										<option value="<?= $value ?>"><?= $value ?></option>
 									<?php endforeach ?>
 								</select>
 							</div>
 						</div>
-						<div class="col-4">
+						<div class="col-md-4">
 							<div class="form-group">
 								<label for="payment_status" class="form-control-label">Payment Status</label>
 								<select name="payment_status" id="payment_status" class="form-control form-control-alternative" required>
@@ -90,7 +81,7 @@ Create Order
 								</select>
 							</div>
 						</div>
-						<div class="col-4">
+						<div class="col-md-4">
 							<div class="form-group">
 								<label for="payment_place" class="form-control-label">Payment Place</label>
 								<input id="payment_place" value="<?= isset($data['payment_place']) ? $data['payment_place']: '' ?>" type="text" class="form-control form-control-alternative" name="payment_place" placeholder="Required" required>
@@ -109,6 +100,12 @@ Create Order
 							</div>
 						</div>
 						<div class="col-12">
+							<div class="form-group">
+								<label for="note" class="form-control-label">Note</label>
+								<textarea placeholder="Optional" class="form-control form-control-alternative" name="note" id="note" rows="3"><?= isset($data['note']) ? $data['note']: '' ?></textarea>
+							</div>
+						</div>
+						<div class="col-12">
 							<button type="submit" class="btn btn-primary">Save</button>
 						</div>
 					</div>
@@ -122,13 +119,45 @@ Create Order
 <script>
 $(document).ready(() => {
 	const init = () => {
+		$("#product-complete").autocomplete({
+		  	source: '/product/search',
+		  	focus: function( event, ui ) {
+	        	$( "#product-complete" ).val( ui.item.name );
+	        	return false;
+	      	},
+	      	select: function( event, ui ) {
+	        	$( "#product-complete" ).val( ui.item.name );
+	        	$('input[name="product_id"]').val( ui.item.id );
+	        	return false;
+	      	},
+		}).autocomplete( "instance" )._renderItem = function( ul, item ) {
+	      	return $( "<li>" )
+	        	.append( "<div>" + item.name + "<br>$" + item.rate + "</div>" )
+	        	.appendTo( ul );
+	    };
+	    $("#customer-complete").autocomplete({
+		  	source: '/customer/search',
+		  	focus: function( event, ui ) {
+	        	$( "#customer-complete" ).val( ui.item.username );
+	        	return false;
+	      	},
+	      	select: function( event, ui ) {
+	        	$( "#customer-complete" ).val( ui.item.username );
+	        	$('input[name="customer_id"]').val( ui.item.id );
+	        	return false;
+	      	},
+		}).autocomplete( "instance" )._renderItem = function( ul, item ) {
+	      	return $( "<li>" )
+	        	.append( "<div>" + item.username + "<br>" + item.email + "</div>" )
+	        	.appendTo( ul );
+	    };
+
+
 		var status = "<?= isset($data['status']) ? $data['status']: '' ?>"
-		var product_id = "<?= isset($data['product_id']) ? $data['product_id']: '' ?>"
 		var payment_type = "<?= isset($data['payment_type']) ? $data['payment_type']: '' ?>"
 		var payment_status = "<?= isset($data['payment_status']) ? $data['payment_status']: '' ?>"
 
 		$('select[name="status"]').val(status)
-		$('select[name="product_id"]').val(product_id)
 		$('select[name="payment_type"]').val(payment_type)
 		$('select[name="payment_status"]').val(payment_status)
 	}

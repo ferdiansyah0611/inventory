@@ -41,7 +41,7 @@ Create User
 							</div>
 						</div>
 						<div class="col-12">
-							<?php if (!isset($data['password'])): ?>
+							<?php if (!isset($data['id'])): ?>
 								<div class="form-group">
 									<label for="password" class="form-control-label">Password</label>
 									<input id="password" type="password" class="form-control form-control-alternative" name="password" placeholder="Required" required>
@@ -49,7 +49,7 @@ Create User
 							<?php else: ?>
 								<div class="form-group">
 									<label for="new_password" class="form-control-label">New Password</label>
-									<input id="new_password" type="password" class="form-control form-control-alternative" name="new_password" placeholder="Optional">
+									<input id="new_password" type="password" class="form-control form-control-alternative" name="password" placeholder="Optional">
 								</div>
 							<?php endif ?>
 							<div class="form-group">
@@ -57,6 +57,7 @@ Create User
 								<select name="role" id="role" class="form-control">
 									<option value="">-- SELECT --</option>
 									<option value="user">User</option>
+									<option value="customer">Customer</option>
 									<option value="admin">Admin</option>
 								</select>
 							</div>

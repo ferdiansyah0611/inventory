@@ -39,6 +39,9 @@ $routes->group('auth', function($routes){
 });
 $routes->group('', ['filter' => 'authorize'], function($routes){
     $routes->get('/', 'Home::index');
+    $routes->get('/product/search', 'ProductController::search');
+    $routes->get('/customer/search', 'UserController::search_customer');
+
     $routes->group('report', function($routes){
         $routes->get('invoice/(:num)', 'ReportController::invoice/$1');
         $routes->get('today', 'ReportController::today_report');
@@ -61,11 +64,11 @@ $routes->group('', ['filter' => 'authorize'], function($routes){
     ]);
     $routes->resource('order', [
         'controller' => 'OrderController',
-        'except' => 'show,update'
+        'except' => 'update'
     ]);
     $routes->resource('product', [
         'controller' => 'ProductController',
-        'except' => 'show,update'
+        'except' => 'update'
     ]);
 });
 

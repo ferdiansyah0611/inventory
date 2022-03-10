@@ -9,11 +9,8 @@ Signup to invoice web
       <div class="text-center text-muted mb-4">
         <small>Sign up with credentials</small>
       </div>
-      <?php if(session()->getFlashData('error') || session()->getFlashData('validation')): ?>
+      <?php if(session()->getFlashData('validation')): ?>
       <div class="alert alert-danger" role="alert">
-        <?php if(session()->getFlashData('error')): ?>
-        <li><?php echo session()->getFlashData('error'); ?></li>
-        <?php endif; ?>
         <?php foreach ((array) session()->getFlashData('validation') as $key => $value): ?>
         <li>
           <?= $value ?>
