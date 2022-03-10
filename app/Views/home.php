@@ -71,8 +71,8 @@ Dashboard
 						<div class="card-body">
 							<div class="row">
 								<div class="col">
-									<h5 class="card-title text-uppercase text-muted mb-0">New user</h5>
-									<span class="h2 font-weight-bold mb-0"><?= $count['user'] ?></span>
+									<h5 class="card-title text-uppercase text-muted mb-0"><?= $user['role'] == 'admin' ? 'New customer': 'All Order' ?></h5>
+									<span class="h2 font-weight-bold mb-0"><?= $user['role'] == 'admin' ? $count['customer'] : $count['allorder'] ?></span>
 								</div>
 								<div class="col-auto">
 									<div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -81,7 +81,7 @@ Dashboard
 								</div>
 							</div>
 							<p class="mt-3 mb-0 text-sm">
-								<span class="text-nowrap">Since last month</span>
+								<span class="text-nowrap"><?= $user['role'] == 'admin' ? 'Since last month': 'All time' ?></span>
 							</p>
 						</div>
 					</div>
@@ -120,7 +120,7 @@ Dashboard
 				<div class="card-header bg-transparent">
 					<div class="row align-items-center">
 						<div class="col">
-							<h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
+							<h6 class="text-uppercase text-muted ls-1 mb-1">Accumulate</h6>
 							<h5 class="h3 mb-0">Total orders</h5>
 						</div>
 					</div>
@@ -139,7 +139,7 @@ Dashboard
 				<div class="row align-items-center">
 					<div class="col">
 						<h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
-						<h5 class="h3 text-white mb-0">Profit</h5>
+						<h5 class="h3 text-white mb-0"><?= $user['role'] == 'admin' ? 'Profit': 'Spending' ?></h5>
 					</div>
 				</div>
 			</div>
@@ -187,12 +187,12 @@ Dashboard
 							<td>
 								<?= $data['created_at'] ?>
 							</td>
-							<td>
-								<?php if($user['role'] == 'admin'): ?>
-								<a href="<?= route_to('App\Controllers\ProductController::edit', $data['id']) ?>" class="btn btn-sm btn-primary">Edit</a>
-								<button data-id="<?= $data['id']?>" type="submit" class="btn btn-sm btn-danger deleted">Remove</button>
-								<?php endif; ?>
-							</td>
+							<?php if($user['role'] == 'admin'): ?>
+								<td>
+									<a href="<?= route_to('App\Controllers\ProductController::edit', $data['id']) ?>" class="btn btn-sm btn-primary">Edit</a>
+									<button data-id="<?= $data['id']?>" type="submit" class="btn btn-sm btn-danger deleted">Remove</button>
+								</td>
+							<?php endif; ?>
 						</tr>
 						<?php endforeach; ?>
 					</tbody>

@@ -55,7 +55,7 @@ class Order extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	public function joined()
+	public function joined($user)
 	{
 		$page = intval(isset($_GET['page']) ? $_GET['page'] : 1);
 		if($page){
@@ -63,6 +63,9 @@ class Order extends Model
 			->select('orders.*, products.name as products_name, users.username as customer_name')
 			->join('users', 'users.id = orders.customer_id')
 			->join('products', 'products.id = orders.product_id');
+			if($user['role'] == 'customer'){
+				$builder->where('customer_id', $user['id']);
+			}
 			if(isset($_GET['search'])){
 				$builder->like('orders.id', $_GET['search']);
 				$builder->orLike('orders.product_id', $_GET['search']);
@@ -70,20 +73,32 @@ class Order extends Model
 				$builder->orLike('users.username', $_GET['search']);
 				$builder->orLike('orders.status', $_GET['search']);
 			}
-			// dd($builder->countAllResults());
 			return [$builder->get(10, $page - 1)->getResult(), $builder->countAllResults(), 10, $page];
 		}
 		return array();
 	}
-	public function count()
+	public function count($user = null)
 	{
 		$date = date_create(date('Y-m-d'));
 		$date->modify('-1 month');
 		$month = $date->format('m');
-		$data = $this->db->table('orders')->where('MONTH(created_at) >=', $month)->where('MONTH(created_at) <=', date('m'))->countAllResults();
-		return $data;
+		$data = $this->db->table('orders')
+			->where('MONTH(created_at) >=', $month)
+			->where('MONTH(created_at) <=', date('m'));
+		if($user['role'] == 'customer'){
+			$data->where('customer_id', $user['id']);
+		}
+		return $data->countAllResults();
 	}
-	public function price_mount()
+	public function count_all($user = null)
+	{
+		$data = $this->db->table('orders');
+		if($user['role'] == 'customer'){
+			$data->where('customer_id', $user['id']);
+		}
+		return $data->countAllResults();
+	}
+	public function price_mount($user)
 	{
 		$value = array();
 		$listmonth = array();
@@ -92,11 +107,15 @@ class Order extends Model
 			$date->modify('-'. $i .' month');
 			$month = $date->format('M');
 			$listmonth[$i] = $month;
-			$value[$month] = $this->db->table('orders')->where('MONTH(created_at)', $date->format('n'))->selectSum('price_total')
-				->where('payment_status', 'Success')
-				->get()->getResultObject();
+			$order = $this->db->table('orders')
+				->where('MONTH(created_at)', $date->format('n'))
+				->selectSum('price_total')
+				->where('payment_status', 'Success');
+			if($user['role'] == 'customer'){
+				$order->where('customer_id', $user['id']);
+			}
+			$value[$month] = $order->get()->getResultObject();
 		}
-		// dd($value);
 		return [
 			'month' => $listmonth,
 			'value' => $value

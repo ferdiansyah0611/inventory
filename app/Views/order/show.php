@@ -29,10 +29,24 @@ Show Product
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
+							<div class="font-weight-bold">Quantity</div>
+							<?= $data['quantity'] ?> item
+						</div>
+					</li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Price Start</div>
 							$<?= number_format($data['price_start']) ?>
 						</div>
 					</li>
+					<?php if ($data['discount']): ?>
+						<li class="list-group-item d-flex justify-content-between align-items-start">
+							<div class="ms-2 me-auto">
+								<div class="font-weight-bold">Discount</div>
+								<?= $data['discount'] ?>%
+							</div>
+						</li>
+					<?php endif ?>
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Price Total</div>
@@ -54,7 +68,17 @@ Show Product
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Payment</div>
-							<?= $data['payment_type'] ?>, <?= $data['payment_status'] ?>, <?= $data['payment_place'] ?>
+							<?= $data['payment_type'] ?>,
+								<?php if ($data['payment_status'] == 'Success'): ?>
+									<span class="badge badge-success"><?= $data['payment_status'] ?></span>
+								<?php endif ?>
+								<?php if ($data['payment_status'] == 'Waiting'): ?>
+									<span class="badge badge-info"><?= $data['payment_status'] ?></span>
+								<?php endif ?>
+								<?php if ($data['payment_status'] == 'Failed'): ?>
+									<span class="badge badge-danger"><?= $data['payment_status'] ?></span>
+								<?php endif ?>
+							<?= $data['payment_place'] ? ', ' . $data['payment_place']: '' ?>
 						</div>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">

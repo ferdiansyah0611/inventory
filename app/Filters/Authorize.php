@@ -27,7 +27,7 @@ class Authorize implements FilterInterface
 	{
 		$session = \Config\Services::session();
 		$role = $session->get('role');
-		if(!($role == 'user' || $role == 'admin'))
+		if(!($role == 'admin' || $role == 'customer'))
 		{
 			return redirect()->to('/auth/signin');
 		}

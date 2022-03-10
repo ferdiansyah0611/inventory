@@ -15,6 +15,7 @@ Create Order
 			</div>
 			<div class="card-body">
 				<form action="<?= route_to($controller . '::create') ?>" method="post" enctype="multipart/form-data">
+					<?= csrf_field() ?>
 					<?php if(session()->getFlashData('validation')): ?>
 					<div class="alert alert-danger" role="alert">
 						<?php foreach ((array) session()->getFlashData('validation') as $key => $value): ?>
@@ -29,37 +30,46 @@ Create Order
 						<input type="hidden" name="id" value="<?= $data['id']?>">
 						<?php endif; ?>
 						<input required type="hidden" name="product_id" value="<?= isset($data['product_id']) ? $data['product_id']: '' ?>">
-						<input required type="hidden" name="customer_id" value="<?= isset($data['customer_id']) ? $data['customer_id']: '' ?>">
-						<div class="col-6">
+						<?php if ($user['role'] == 'admin'): ?>
+							<input required type="hidden" name="customer_id" value="<?= isset($data['customer_id']) ? $data['customer_id']: '' ?>">
+							<?php if ($data['status'] == 'Request'): ?>
+								<input required type="hidden" name="is_request" value="<?= isset($data['product_id']) ? $data['product_id']: '' ?>">
+							<?php endif ?>
+						<?php else: ?>
+							<input required type="hidden" name="customer_id" value="<?= isset($user['id']) ? $user['id']: '' ?>">
+						<?php endif ?>
+						<div class="col-<?= $user['role'] == 'admin' ? '6': '12' ?>">
 							<div class="form-group">
 								<label for="product-complete" class="form-control-label">Product</label>
-								<input value="<?= isset($data['products_name']) ? $data['products_name']: '' ?>" class="form-control form-control-alternative" type="text" id="product-complete" placeholder="Required" required>
+								<input name="products_name" value="<?= isset($data['products_name']) ? $data['products_name']: '' ?>" class="form-control form-control-alternative" type="text" id="product-complete" placeholder="Required" required>
 							</div>
 						</div>
-						<div class="col-6">
-							<div class="form-group">
-								<label for="status" class="form-control-label">Status</label>
-								<select name="status" id="status" class="form-control form-control-alternative">
-									<option value="">-- SELECT --</option>
-									<?php foreach (array('Done' , 'Confirm', 'Delivery', 'Cancel') as $key => $value): ?>
-										<option value="<?= $value ?>"><?= $value ?></option>
-									<?php endforeach ?>
-								</select>
+						<?php if ($user['role'] == 'admin'): ?>
+							<div class="col-6">
+								<div class="form-group">
+									<label for="status" class="form-control-label">Status</label>
+									<select name="status" id="status" class="form-control form-control-alternative">
+										<option value="">-- SELECT --</option>
+										<?php foreach (array('Done' , 'Confirm', 'Delivery', 'Request', 'Cancel') as $key => $value): ?>
+											<option value="<?= $value ?>"><?= $value ?></option>
+										<?php endforeach ?>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="col-12">
-							<div class="form-group">
-								<label for="customer-complete" class="form-control-label">Customer</label>
-								<input id="customer-complete" value="<?= isset($data['customer_name']) ? $data['customer_name']: '' ?>" type="text" class="form-control form-control-alternative" placeholder="Required" required>
+							<div class="col-12">
+								<div class="form-group">
+									<label for="customer-complete" class="form-control-label">Customer</label>
+									<input name="customer_name" id="customer-complete" value="<?= isset($data['customer_name']) ? $data['customer_name']: '' ?>" type="text" class="form-control form-control-alternative" placeholder="Required" required>
+								</div>
 							</div>
-						</div>
+						<?php endif ?>
 						<div class="col-12">
 							<div class="form-group">
 								<label for="quantity" class="form-control-label">Quantity</label>
-								<input value="<?= isset($data['quantity']) ? $data['quantity']: '' ?>" class="form-control form-control-alternative" type="number" placeholder="Required" required name="quantity">
+								<input id="quantity" value="<?= isset($data['quantity']) ? $data['quantity']: '' ?>" class="form-control form-control-alternative" type="number" placeholder="Required" required name="quantity">
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-<?= $user['role'] == 'admin' ? '4': '6' ?>">
 							<div class="form-group">
 								<label for="payment_type" class="form-control-label">Payment Type</label>
 								<select name="payment_type" id="payment_type" class="form-control form-control-alternative" required>
@@ -70,35 +80,39 @@ Create Order
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label for="payment_status" class="form-control-label">Payment Status</label>
-								<select name="payment_status" id="payment_status" class="form-control form-control-alternative" required>
-									<option value="">-- SELECT --</option>
-									<?php foreach (array('Failed', 'Waiting', 'Success') as $key => $value): ?>
-										<option value="<?= $value ?>"><?= $value ?></option>
-									<?php endforeach ?>
-								</select>
+						<?php if ($user['role'] == 'admin'): ?>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="payment_status" class="form-control-label">Payment Status</label>
+									<select name="payment_status" id="payment_status" class="form-control form-control-alternative" required>
+										<option value="">-- SELECT --</option>
+										<?php foreach (array('Failed', 'Waiting', 'Success') as $key => $value): ?>
+											<option value="<?= $value ?>"><?= $value ?></option>
+										<?php endforeach ?>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-4">
+						<?php endif ?>
+						<div class="col-md-<?= $user['role'] == 'admin' ? '4': '6' ?>">
 							<div class="form-group">
 								<label for="payment_place" class="form-control-label">Payment Place</label>
-								<input id="payment_place" value="<?= isset($data['payment_place']) ? $data['payment_place']: '' ?>" type="text" class="form-control form-control-alternative" name="payment_place" placeholder="Required" required>
+								<input id="payment_place" value="<?= isset($data['payment_place']) ? $data['payment_place']: '' ?>" type="text" class="form-control form-control-alternative" name="payment_place" placeholder="Optional" autocomplete="off">
 							</div>
 						</div>
-						<div class="col-6">
-							<div class="form-group">
-								<label for="discount" class="form-control-label">Discount %</label>
-								<input id="discount" value="<?= isset($data['discount']) ? ($data['discount']): '' ?>" type="number" class="form-control form-control-alternative" name="discount" placeholder="Optional">
+						<?php if ($user['role'] == 'admin'): ?>
+							<div class="col-6">
+								<div class="form-group">
+									<label for="discount" class="form-control-label">Discount %</label>
+									<input id="discount" value="<?= isset($data['discount']) ? ($data['discount']): '' ?>" type="number" class="form-control form-control-alternative" name="discount" placeholder="Optional">
+								</div>
 							</div>
-						</div>
-						<div class="col-6">
-							<div class="form-group">
-								<label for="order_at" class="form-control-label">Order At</label>
-								<input id="order_at" value="<?= isset($data['order_at']) ? date('Y-m-d\TH:i', strtotime($data['order_at'])): '' ?>" type="datetime-local" class="form-control form-control-alternative" name="order_at" placeholder="Required" required>
+							<div class="col-6">
+								<div class="form-group">
+									<label for="order_at" class="form-control-label">Order At</label>
+									<input id="order_at" value="<?= isset($data['order_at']) ? date('Y-m-d\TH:i', strtotime($data['order_at'])): '' ?>" type="datetime-local" class="form-control form-control-alternative" name="order_at" placeholder="Required" required>
+								</div>
 							</div>
-						</div>
+						<?php endif ?>
 						<div class="col-12">
 							<div class="form-group">
 								<label for="note" class="form-control-label">Note</label>

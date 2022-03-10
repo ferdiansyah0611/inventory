@@ -68,7 +68,7 @@ Order
 								<?php if ($data->status == 'Done'): ?>
 									<span class="badge badge-success"><?= $data->status ?></span>
 								<?php endif ?>
-								<?php if ($data->status == 'Confirm'): ?>
+								<?php if ($data->status == 'Confirm' || $data->status == 'Request'): ?>
 									<span class="badge badge-info"><?= $data->status ?></span>
 								<?php endif ?>
 								<?php if ($data->status == 'Delivery'): ?>
@@ -82,7 +82,7 @@ Order
 								$<?= number_format($data->price_total, 0) ?>
 							</td>
 							<td>
-								<?= $data->order_at ?>
+								<?= $data->order_at ? $data->order_at: '-' ?>
 							</td>
 							<?php if ($user['role'] == 'admin'): ?>
 								<td class="text-right">

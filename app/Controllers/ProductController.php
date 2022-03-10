@@ -86,8 +86,8 @@ class ProductController extends BaseController
 
 		$category = new Category();
 		$brand = new Brand();
-		$this->data['category'] = $category->find();
-		$this->data['brand'] = $brand->find();
+		$this->data['category'] = $category->where('status', 'Available')->find();
+		$this->data['brand'] = $brand->where('status', 'Available')->find();
 		return view('product/create', $this->data);
 	}
 
@@ -119,7 +119,7 @@ class ProductController extends BaseController
 	            	unlink(ROOTPATH . 'public' . $find['image']);
 	            }
 	        }else{
-	            // $data = ['errors' => 'The image has already been moved.'];
+	        	$this->session->setFlashdata('validation', ['The image has already been moved.']);
 	        }
 		}
 		$this->model->save($data);

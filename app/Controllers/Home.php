@@ -19,12 +19,15 @@ class Home extends BaseController
 		$brand = new Brand();
 		$order = new Order();
 		$user = new User();
-		$order->price_mount();
 
 		$this->data['count']['product'] = $product->count();
 		$this->data['count']['brand'] = $brand->count();
-		$this->data['count']['order'] = $order->count();
-		$this->data['count']['user'] = $user->count();
+		$this->data['count']['order'] = $order->count($this->user);
+		if($this->user['role'] == 'admin'){
+			$this->data['count']['customer'] = $user->count_customer();
+		}else{
+			$this->data['count']['allorder'] = $order->count_all($this->user);
+		}
 		$this->data['product'] = $product->orderBy('created_at', 'DESC')->limit(10)->get()->getResultArray();
 		return view('home', $this->data);
 	}

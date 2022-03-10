@@ -48,4 +48,12 @@ class User extends Model
 		$data = $this->db->table('users')->where('created_at >=', $month)->where('created_at <=', date('Y-m-d H:i:s'))->countAllResults();
 		return $data;
 	}
+	public function count_customer()
+	{
+		$date = date_create(date('Y-m-d'));
+		$date->modify('-1 month');
+		$month = $date->format('Y-m-d H:i:s');
+		$data = $this->db->table('users')->where('role', 'customer')->where('created_at >=', $month)->where('created_at <=', date('Y-m-d H:i:s'))->countAllResults();
+		return $data;
+	}
 }

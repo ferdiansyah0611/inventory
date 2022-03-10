@@ -11,7 +11,7 @@ class CategoryController extends BaseController
 		$this->data['controller'] = 'App\Controllers\CategoryController';
 		$this->rules = [
 			'name' => 'required|min_length[3]',
-			'status' => 'required'
+			'status' => 'required|in_list[Available,Not Available]'
 		];
 		$this->model = new Category();
 	}

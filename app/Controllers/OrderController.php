@@ -15,12 +15,12 @@ class OrderController extends BaseController
 			'customer_id' => 'required|integer',
 			'quantity' => 'required|integer',
 			'discount' => 'permit_empty|integer',
-			'status' => 'required|in_list[Done,Confirm,Delivery,Cancel]',
+			'status' => 'required|in_list[Done,Confirm,Delivery,Cancel,Request]',
 			'note' => 'permit_empty',
 			'payment_type' => 'required',
 			'payment_status' => 'required',
 			'payment_place' => 'permit_empty',
-			'order_at' => 'required',
+			'order_at' => 'permit_empty',
 		];
 		$this->model = new Order();
 	}
@@ -60,7 +60,7 @@ class OrderController extends BaseController
 	public function index()
 	{
 		$pager = \Config\Services::pager();
-		$data = $this->model->joined();
+		$data = $this->model->joined($this->user);
 		$pager->makeLinks($data[3], $data[2], $data[1]);
 		$this->data['list'] = $data[0];
 		$this->data['pager'] = $pager;
@@ -103,26 +103,52 @@ class OrderController extends BaseController
 	 */
 	public function create()
 	{
+		$data = $this->_wrap();
+		if($this->user['role'] == 'customer'){
+			$data['discount'] = 0;
+			$data['status'] = 'Request';
+			$data['payment_status'] = 'Waiting';
+			$this->rules['status'] = 'permit_empty';
+			$this->rules['payment_status'] = 'permit_empty';
+		}
 		$validate = $this->validate($this->rules);
 		if(!$validate){
 			$this->session->setFlashdata('validation', $this->validator->getErrors());
 			$this->session->setFlashdata($_POST);
 			return redirect()->back();
 		}
-		$data = $this->_wrap();
 		$product = new Product();
 		$productUpdate = new Product();
 		$productUpdate->where('id', $data['product_id']);
 		$productId = $product->where('id', $data['product_id'])->first();
-		// dd($data['discount']);
+		
+		$productIdRate = intval($productId['rate']);
+		$dataQuantity = intval($data['quantity']);
+		$dataDiscount = intval($data['discount']);
+		// edit
 		if(isset($data['id'])){
 			$old = $this->model->find($data['id']);
-			$productUpdate->set(['quantity' => ($productId['quantity'] + intval($old['quantity'])) - $data['quantity']])->update();
+			if($this->request->getPost('is_request') && ($data['status'] !== 'Request' && $data['status'] !== 'Cancel')){
+				$productUpdate->set(['quantity' => $productId['quantity'] - $data['quantity']])->update();
+			}else{
+				$productUpdate->set(['quantity' => ($productId['quantity'] + intval($old['quantity'])) - $data['quantity']])->update();
+			}
 		}else{
 			$data['price_start'] = $productId['rate'];
-			$productUpdate->set(['quantity' => $productId['quantity'] - $data['quantity']])->update();
+			// new
+			if(intval($data['quantity']) > intval($productId['quantity'])){
+				$this->session->setFlashdata('validation', array(
+					"Quantity field can't be more than " . $productId['quantity'] . ' quantity of ' . $productId['name']
+				));
+				$this->session->setFlashdata($_POST);
+				return redirect()->back();
+			}
+			if($data['status'] !== 'Request'){
+				$productUpdate->set(['quantity' => $productId['quantity'] - $data['quantity']])->update();
+			}
 		}
-		$data['price_total'] = $data['discount'] !== '0' && $data['discount'] !== '' ? intval($productId['rate']) * intval($data['quantity']) * (intval($data['discount']) / 100) : (intval($productId['rate']) * intval($data['quantity']));
+
+		$data['price_total'] = $dataDiscount >= 1 ? $productIdRate * $dataQuantity * ($dataDiscount / 100) : ($productIdRate * $dataQuantity);
 
 		$this->model->save($data);
 		return redirect()->back();
@@ -161,6 +187,15 @@ class OrderController extends BaseController
 	 */
 	public function delete($id = null)
 	{
+		$order = new Order();
+		$find = $order->where('id', $id)->first();
+		if($find['status'] !== 'Request' && $find['status'] !== 'Cancel'){
+			$product = new Product();
+			$data = $product->where('id', $find['product_id'])->first();
+			$product->update($find['product_id'], [
+				'quantity' => intval($data['quantity']) + intval($find['quantity'])
+			]);
+		}
 		$this->model->where('id', $id)->delete();
 		return redirect()->back();
 	}

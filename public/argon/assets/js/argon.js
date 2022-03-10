@@ -841,6 +841,7 @@ var BarsChart = (function() {
 			$.ajax({
 				url: '/chart/order',
 				success: (res) => {
+					res = JSON.parse(res)
 					const month = []
   					const value = []
 	  				Object.keys(res.month).forEach(v => {
@@ -893,6 +894,7 @@ var SalesChart = (function() {
   		$.ajax({
   			url: '/chart/price-last',
   			success(res){
+  				res = JSON.parse(res)
   				const month = []
   				const value = []
   				Object.keys(res.month).forEach(v => {
