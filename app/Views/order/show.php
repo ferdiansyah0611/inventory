@@ -24,13 +24,13 @@ Show Product
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Note</div>
-							<?= $data['note'] ? $data['note']: 'no note' ?>
+							<?= $data['note'] ? esc($data['note']): 'no note' ?>
 						</div>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Quantity</div>
-							<?= $data['quantity'] ?> item
+							<?= esc($data['quantity']) ?> item
 						</div>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">
@@ -43,7 +43,7 @@ Show Product
 						<li class="list-group-item d-flex justify-content-between align-items-start">
 							<div class="ms-2 me-auto">
 								<div class="font-weight-bold">Discount</div>
-								<?= $data['discount'] ?>%
+								<?= esc($data['discount']) ?>%
 							</div>
 						</li>
 					<?php endif ?>
@@ -56,7 +56,7 @@ Show Product
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Status</div>
-							<?= $data['status'] ?>
+							<?= esc($data['status']) ?>
 						</div>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">
@@ -68,17 +68,17 @@ Show Product
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Payment</div>
-							<?= $data['payment_type'] ?>,
-								<?php if ($data['payment_status'] == 'Success'): ?>
-									<span class="badge badge-success"><?= $data['payment_status'] ?></span>
+							<?= esc($data['payment_type']) ?>,
+								<?php if (esc($data['payment_status']) == 'Success'): ?>
+									<span class="badge badge-success"><?= esc($data['payment_status']) ?></span>
 								<?php endif ?>
-								<?php if ($data['payment_status'] == 'Waiting'): ?>
-									<span class="badge badge-info"><?= $data['payment_status'] ?></span>
+								<?php if (esc($data['payment_status']) == 'Waiting'): ?>
+									<span class="badge badge-info"><?= esc($data['payment_status']) ?></span>
 								<?php endif ?>
-								<?php if ($data['payment_status'] == 'Failed'): ?>
-									<span class="badge badge-danger"><?= $data['payment_status'] ?></span>
+								<?php if (esc($data['payment_status']) == 'Failed'): ?>
+									<span class="badge badge-danger"><?= esc($data['payment_status']) ?></span>
 								<?php endif ?>
-							<?= $data['payment_place'] ? ', ' . $data['payment_place']: '' ?>
+							<?= esc($data['payment_place']) ? ', ' . esc($data['payment_place']): '' ?>
 						</div>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">

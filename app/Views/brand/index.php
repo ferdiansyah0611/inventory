@@ -57,13 +57,13 @@ Brand
 								<?= $data['id'] ?>
 							</th>
 							<td>
-								<?= $data['name'] ?>
+								<?= esc($data['name']) ?>
 							</td>
 							<td>
-								<?php if ($data['status'] == 'Available'): ?>
+								<?php if (esc($data['status']) == 'Available'): ?>
 									<span class="badge badge-success"><?= $data['status'] ?></span>
 								<?php endif ?>
-								<?php if ($data['status'] == 'Not Available'): ?>
+								<?php if (esc($data['status']) == 'Not Available'): ?>
 									<span class="badge badge-danger"><?= $data['status'] ?></span>
 								<?php endif ?>
 							</td>

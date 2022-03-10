@@ -59,30 +59,30 @@ Order
 								<a href="<?= route_to($controller . '::show', $data->id) ?>"><?= $data->id ?></a>
 							</th>
 							<td>
-								<?= $data->products_name ?>
+								<?= esc($data->products_name) ?>
 							</td>
 							<td>
-								<?= $data->customer_name ?>
+								<?= esc($data->customer_name) ?>
 							</td>
 							<td>
-								<?php if ($data->status == 'Done'): ?>
-									<span class="badge badge-success"><?= $data->status ?></span>
+								<?php if (esc($data->status) == 'Done'): ?>
+									<span class="badge badge-success"><?= esc($data->status) ?></span>
 								<?php endif ?>
-								<?php if ($data->status == 'Confirm' || $data->status == 'Request'): ?>
-									<span class="badge badge-info"><?= $data->status ?></span>
+								<?php if (esc($data->status) == 'Confirm' || esc($data->status) == 'Request'): ?>
+									<span class="badge badge-info"><?= esc($data->status) ?></span>
 								<?php endif ?>
-								<?php if ($data->status == 'Delivery'): ?>
-									<span class="badge badge-warning"><?= $data->status ?></span>
+								<?php if (esc($data->status) == 'Delivery'): ?>
+									<span class="badge badge-warning"><?= esc($data->status) ?></span>
 								<?php endif ?>
-								<?php if ($data->status == 'Cancel'): ?>
-									<span class="badge badge-danger"><?= $data->status ?></span>
+								<?php if (esc($data->status) == 'Cancel'): ?>
+									<span class="badge badge-danger"><?= esc($data->status) ?></span>
 								<?php endif ?>
 							</td>
 							<td>
 								$<?= number_format($data->price_total, 0) ?>
 							</td>
 							<td>
-								<?= $data->order_at ? $data->order_at: '-' ?>
+								<?= $data->order_at ? esc($data->order_at): '-' ?>
 							</td>
 							<?php if ($user['role'] == 'admin'): ?>
 								<td class="text-right">

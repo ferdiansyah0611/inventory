@@ -58,13 +58,13 @@ User
 								<?= $data['id'] ?>
 							</th>
 							<td>
-								<?= $data['username'] ?>
+								<?= esc($data['username']) ?>
 							</td>
 							<td>
-								<?= $data['email'] ?>
+								<?= esc($data['email']) ?>
 							</td>
 							<td>
-								<?= $data['role'] ?>
+								<?= esc($data['role']) ?>
 							</td>
 							<td>
 								<?= $data['created_at'] ?>

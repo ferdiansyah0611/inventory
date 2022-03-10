@@ -59,16 +59,16 @@ Product
 								<a href="<?= route_to($controller . '::show', $data->id) ?>"><?= $data->id ?></a>
 							</th>
 							<td>
-								<?= $data->name ?>
+								<?= esc($data->name) ?>
 							</td>
 							<td>
-								<?= $data->status ?>
+								<?= esc($data->status) ?>
 							</td>
 							<td>
-								<?= $data->quantity ?>
+								<?= esc($data->quantity) ?>
 							</td>
 							<td>
-								$<?= number_format($data->rate, 0) ?>
+								$<?= number_format(esc($data->rate), 0) ?>
 							</td>
 							<td>
 								<?= $data->created_at ?>

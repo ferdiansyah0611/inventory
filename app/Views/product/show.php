@@ -36,7 +36,7 @@ Show Product
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Description</div>
-							<?= $data['description'] ? $data['description']: 'no description' ?>
+							<?= $data['description'] ? esc($data['description']): 'no description' ?>
 						</div>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">
@@ -48,7 +48,7 @@ Show Product
 					<li class="list-group-item d-flex justify-content-between align-items-start">
 						<div class="ms-2 me-auto">
 							<div class="font-weight-bold">Status</div>
-							<?= $data['status'] ?>
+							<?= esc($data['status']) ?>
 						</div>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-start">
