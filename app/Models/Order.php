@@ -73,7 +73,7 @@ class Order extends Model
 				$builder->orLike('users.username', $_GET['search']);
 				$builder->orLike('orders.status', $_GET['search']);
 			}
-			return [$builder->get(10, $page - 1)->getResult(), $builder->countAllResults(), 10, $page];
+			return [$builder->orderBy('created_at', 'DESC')->get(10, $page - 1)->getResult(), $builder->countAllResults(), 10, $page];
 		}
 		return array();
 	}

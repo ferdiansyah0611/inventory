@@ -32,7 +32,7 @@ Create Order
 						<input required type="hidden" name="product_id" value="<?= isset($data['product_id']) ? $data['product_id']: '' ?>">
 						<?php if ($user['role'] == 'admin'): ?>
 							<input required type="hidden" name="customer_id" value="<?= isset($data['customer_id']) ? $data['customer_id']: '' ?>">
-							<?php if ($data['status'] == 'Request'): ?>
+							<?php if (isset($data['status']) && $data['status'] == 'Request'): ?>
 								<input required type="hidden" name="is_request" value="<?= isset($data['product_id']) ? $data['product_id']: '' ?>">
 							<?php endif ?>
 						<?php else: ?>

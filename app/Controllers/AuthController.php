@@ -32,7 +32,7 @@ class AuthController extends BaseController
 			if(!$validate)
 			{
 				$this->session->setFlashdata('validation', $this->validator->getErrors());
-				return redirect()->back();
+				return view('auth/login');
 			}
 			$request = $this->request;
 			$user = new User();
@@ -41,6 +41,10 @@ class AuthController extends BaseController
 				$data = $find;
 				$data['password'] = null;
 				$this->session->set($data);
+				if($find['role'] == 'user'){
+					$this->session->setFlashdata('validation', ['Please wait, you are not confirmed to be customer.']);
+					return view('auth/login', $data);
+				}
 				return redirect()->to('/');
 			}
 			$this->session->setFlashdata('validation', ['Password not match.']);
@@ -49,21 +53,23 @@ class AuthController extends BaseController
 	}
 	public function register()
 	{
-		$method = $this->request->getMethod();
+		$request = $this->request;
+		$method = $request->getMethod();
 		if($method == 'get'){
-			if(!isset($this->user['id'])){
-				return view('auth/register');
+			if(isset($this->user['id'])){
+				return redirect()->to('/');
 			}
-			return redirect()->to('/');
+			$data = $this->session->getFlashdata();
+			return view('auth/register', $data);
 		}
 		if($method == 'post'){
 			$validate = $this->validate($this->rules);
 			if(!$validate)
 			{
-				$this->session->setFlashdata('validation', $this->validator->listErrors());
+				$this->session->setFlashdata('validation', $this->validator->getErrors());
+				$this->session->setFlashdata($_POST);
 				return redirect()->back();
 			}
-			$request = $this->request;
 			$user = new User();
 			$find = $user->where('email', $request->getPost('email'))->first();
 			if(!isset($find['id']))
@@ -84,8 +90,10 @@ class AuthController extends BaseController
 				$this->session->setFlashdata('success', 'Successfuly registered. Signin now!');
 				return redirect()->to('/auth/signin');
 			}
+			$this->session->setFlashdata($_POST);
 			$this->session->setFlashdata('validation', ['User has registered.']);
-			return view('auth/register');
+			$data = $this->session->getFlashdata();
+			return view('auth/register', $data);
 		}
 	}
 	public function logout()

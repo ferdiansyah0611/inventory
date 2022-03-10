@@ -25,7 +25,7 @@ Signup to invoice web
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="ni ni-single-02"></i></span>
             </div>
-            <input class="form-control" name="username" placeholder="Username" type="text">
+            <input value="<?= isset($username) ? $username: '' ?>" class="form-control" name="username" placeholder="Username" type="text">
           </div>
         </div>
         <div class="form-group mb-3">
@@ -33,7 +33,7 @@ Signup to invoice web
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="ni ni-email-83"></i></span>
             </div>
-            <input class="form-control" name="email" placeholder="Email" type="email">
+            <input value="<?= isset($email) ? $email: '' ?>" class="form-control" name="email" placeholder="Email" type="email">
           </div>
         </div>
         <div class="form-group">
