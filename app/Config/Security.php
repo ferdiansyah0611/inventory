@@ -6,6 +6,8 @@ use CodeIgniter\Config\BaseConfig;
 
 class Security extends BaseConfig
 {
+	public $csrfProtection = 'session';
+	public $tokenRandomize = true;
 	/**
 	 * --------------------------------------------------------------------------
 	 * CSRF Token Name
