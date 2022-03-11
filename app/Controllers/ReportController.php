@@ -28,7 +28,7 @@ class ReportController extends BaseController
 		$due = $date->format('Y-m-d H:i:s');
 		$data['data']['due'] = $due;
 
-        $filename = date('y-m-d-H-i-s'). ' - invoice ' . $id;
+        $filename = date('y-m-d H-i-s'). ' - invoice ' . $id;
         $dompdf = new Dompdf();
         $dompdf->loadHtml(view('pdf/invoice', $data));
         $dompdf->setPaper('A4', 'landscape');
@@ -54,7 +54,7 @@ class ReportController extends BaseController
     	$data['list'] = $list;
     	$data['price_total'] = $sum['price_total'];
 
-    	$filename = date('y-m-d'). ' - report-today';
+    	$filename = date('y-m-d'). '_report_today';
         $dompdf = new Dompdf();
         $dompdf->loadHtml(view('pdf/today_report', $data));
         $dompdf->setPaper('A4', 'landscape');
