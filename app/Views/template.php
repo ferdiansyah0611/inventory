@@ -34,10 +34,19 @@
     <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
       <div class="scrollbar-inner">
         <!-- Brand -->
-        <div class="sidenav-header  align-items-center">
+        <div class="sidenav-header d-flex align-items-center">
           <a class="navbar-brand" href="javascript:void(0)">
             <img src="<?= base_url('argon') ?>/assets/img/brand/blue.png" class="navbar-brand-img" alt="...">
           </a>
+          <div class="ml-auto">
+            <div class="sidenav-toggler d-none d-xl-block active" data-action="sidenav-unpin" data-target="#sidenav-main">
+              <div class="sidenav-toggler-inner">
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="navbar-inner">
           <!-- Collapse -->
@@ -51,36 +60,86 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link<?= $active == 'Brand' ? ' active': '' ?>" href="<?= route_to('App\Controllers\BrandController::index') ?>">
+                <a class="nav-link collapsed<?= $active == 'Brand' ? ' active': '' ?>" href="#navbar-Brand" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Brand">
                   <i class="ni ni-books text-primary"></i>
                   <span class="nav-link-text">Brand</span>
                 </a>
+                <div class="collapse" id="navbar-Brand" style="">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\BrandController::new') ?>" class="nav-link">Create</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\BrandController::index') ?>" class="nav-link">Data</a>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link<?= $active == 'Category' ? ' active': '' ?>" href="<?= route_to('App\Controllers\CategoryController::index') ?>">
+                <a class="nav-link collapsed<?= $active == 'Category' ? ' active': '' ?>" href="#navbar-Category" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Category">
                   <i class="ni ni-collection text-primary"></i>
                   <span class="nav-link-text">Category</span>
                 </a>
+                <div class="collapse" id="navbar-Category" style="">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\CategoryController::new') ?>" class="nav-link">Create</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\CategoryController::index') ?>" class="nav-link">Data</a>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link<?= $active == 'Product' ? ' active': '' ?>" href="<?= route_to('App\Controllers\ProductController::index') ?>">
+                <a class="nav-link collapsed<?= $active == 'Product' ? ' active': '' ?>" href="#navbar-Product" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Product">
                   <i class="ni ni-bag-17 text-primary"></i>
                   <span class="nav-link-text">Product</span>
                 </a>
+                <div class="collapse" id="navbar-Product" style="">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\ProductController::new') ?>" class="nav-link">Create</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\ProductController::index') ?>" class="nav-link">Data</a>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li class="nav-item">
-                <a class="nav-link<?= $active == 'Order' ? ' active': '' ?>" href="<?= route_to('App\Controllers\OrderController::index') ?>">
+                <a class="nav-link collapsed<?= $active == 'Order' ? ' active': '' ?>" href="#navbar-Order" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Order">
                   <i class="ni ni-delivery-fast text-primary"></i>
                   <span class="nav-link-text">Order</span>
                 </a>
+                <div class="collapse" id="navbar-Order" style="">
+                  <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\OrderController::new') ?>" class="nav-link">Create</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="<?= route_to('App\Controllers\OrderController::index') ?>" class="nav-link">Data</a>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <?php if($user['role'] == 'admin'): ?>
-              <li class="nav-item">
-                <a class="nav-link<?= $active == 'User' ? ' active': '' ?>" href="<?= route_to('App\Controllers\UserController::index') ?>">
-                  <i class="ni ni-single-02 text-primary"></i>
-                  <span class="nav-link-text">User</span>
-                </a>
-              </li>
+                <li class="nav-item">
+                  <a class="nav-link collapsed<?= $active == 'User' ? ' active': '' ?>" href="#navbar-User" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-User">
+                    <i class="ni ni-single-02 text-primary"></i>
+                    <span class="nav-link-text">User</span>
+                  </a>
+                  <div class="collapse" id="navbar-User" style="">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\UserController::new') ?>" class="nav-link">Create</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\UserController::index') ?>" class="nav-link">Data</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
               <?php endif; ?>
             </ul>
             <!-- Divider -->
@@ -197,7 +256,8 @@
     <script src="<?= base_url('argon') ?>/assets/vendor/chart.js/dist/Chart.min.js"></script>
     <script src="<?= base_url('argon') ?>/assets/vendor/chart.js/dist/Chart.extension.js"></script>
     <!-- Argon JS -->
-    <script src="<?= base_url('argon') ?>/assets/js/argon.js?v=1.2.0"></script>
+    <script src="<?= base_url('argon') ?>/assets/vendor/list.js/dist/list.min.js"></script>
+    <script src="<?= base_url('argon') ?>/assets/js/argon.js?v=1.1.0"></script>
     <?= $this->renderSection('js') ?>
   </body>
 </html>
