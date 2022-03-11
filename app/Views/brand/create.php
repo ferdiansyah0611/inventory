@@ -23,7 +23,7 @@ Create Brand
 						<div class="col-12">
 							<div class="form-group">
 								<label for="name" class="form-control-label">Name</label>
-								<input id="name" value="<?= isset($data['name']) ? $data['name']: '' ?>" type="text" class="form-control form-control-alternative" name="name" placeholder="Required" required>
+								<input autocomplete="off" id="name" value="<?= isset($data['name']) ? $data['name']: '' ?>" type="text" class="form-control form-control-alternative" name="name" placeholder="Required" required>
 							</div>
 							<div class="form-group">
 								<label for="status" class="form-control-label">Status</label>

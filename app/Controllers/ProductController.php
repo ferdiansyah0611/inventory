@@ -123,7 +123,10 @@ class ProductController extends BaseController
 	            $data['image'] = $path . '/' . $name;
 	            if(isset($data['id'])){
 	            	$find = $this->model->where('id', $data['id'])->first();
-	            	unlink(ROOTPATH . 'public' . $find['image']);
+	            	$pathfile = ROOTPATH . 'public' . $find['image'];
+	            	if(file_exists($pathfile)){
+	            		unlink($pathfile);
+	            	}
 	            }
 	        }else{
 	        	$this->session->setFlashdata('validation', ['The image has already been moved.']);
@@ -173,7 +176,10 @@ class ProductController extends BaseController
 			return redirect()->back();
 		}
 		$model = $this->model->where('id', $id);
-	    unlink(ROOTPATH . 'public' . $model->first()['image']);
+		$path = ROOTPATH . 'public' . $model->first()['image'];
+		if(file_exists($path)){
+	    	unlink($path);
+		}
 	    $delete = new Product();
 		$delete->where('id', $id)->delete();
 		return redirect()->back();

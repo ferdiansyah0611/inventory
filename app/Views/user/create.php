@@ -23,13 +23,13 @@ Create User
 						<div class="col-6">
 							<div class="form-group">
 								<label for="username" class="form-control-label">Username</label>
-								<input id="username" value="<?= isset($data['username']) ? $data['username']: '' ?>" type="text" class="form-control form-control-alternative" name="username" placeholder="Required" required>
+								<input autocomplete="off" id="username" value="<?= isset($data['username']) ? $data['username']: '' ?>" type="text" class="form-control form-control-alternative" name="username" placeholder="Required" required>
 							</div>
 						</div>
 						<div class="col-6">
 							<div class="form-group">
 								<label for="email" class="form-control-label">Email</label>
-								<input id="email" value="<?= isset($data['email']) ? $data['email']: '' ?>" type="email" class="form-control form-control-alternative" name="email" placeholder="Required" required>
+								<input autocomplete="off" id="email" value="<?= isset($data['email']) ? $data['email']: '' ?>" type="email" class="form-control form-control-alternative" name="email" placeholder="Required" required>
 							</div>
 						</div>
 						<div class="col-12">
