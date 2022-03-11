@@ -15,16 +15,7 @@ Create Product
 			</div>
 			<div class="card-body">
 				<form action="<?= route_to($controller . '::create') ?>" method="post" enctype="multipart/form-data">
-					<?= csrf_field() ?>
-					<?php if(session()->getFlashData('validation')): ?>
-					<div class="alert alert-danger" role="alert">
-						<?php foreach ((array) session()->getFlashData('validation') as $key => $value): ?>
-						<li>
-							<?= $value ?>
-						</li>
-						<?php endforeach; ?>
-					</div>
-					<?php endif; ?>
+					<?= $this->include('component/alert-form') ?>
 					<div class="row">
 						<?php if(isset($data['id'])): ?>
 						<input type="hidden" name="id" value="<?= $data['id']?>">

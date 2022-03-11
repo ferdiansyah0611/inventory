@@ -87,6 +87,7 @@ class UserController extends BaseController
 	{
 		$data = $this->_wrap();
 		$mail = $this->model->where('email', $data['email'])->find();
+		$this->hande_message($data);
 
 		$validate = $this->validate($this->rules);
 		if(!$validate){

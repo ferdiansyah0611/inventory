@@ -122,6 +122,7 @@ class ProductController extends BaseController
 	        	$this->session->setFlashdata('validation', ['The image has already been moved.']);
 	        }
 		}
+		$this->hande_message($data);
 		$this->model->save($data);
 		return redirect()->back();
 	}

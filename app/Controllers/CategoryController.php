@@ -83,6 +83,7 @@ class CategoryController extends BaseController
 			return redirect()->back();
 		}
 		$data = $this->_wrap();
+		$this->hande_message($data);
 		$this->model->save($data);
 		return redirect()->back();
 	}

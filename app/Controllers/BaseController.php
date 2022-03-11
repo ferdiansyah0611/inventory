@@ -52,4 +52,12 @@ class BaseController extends Controller
 		];
 		$this->data['user'] = $this->user;
 	}
+	public function hande_message($data)
+	{
+		if(isset($data['id'])){
+			$this->session->setFlashdata('success', 'Successfuly update data');
+		}else{
+			$this->session->setFlashdata('success', 'Successfuly add data');
+		}
+	}
 }

@@ -150,6 +150,7 @@ class OrderController extends BaseController
 
 		$data['price_total'] = $dataDiscount >= 1 ? $productIdRate * $dataQuantity * ($dataDiscount / 100) : ($productIdRate * $dataQuantity);
 
+		$this->hande_message($data);
 		$this->model->save($data);
 		return redirect()->back();
 	}
