@@ -21,7 +21,7 @@ Create Order
 						<input type="hidden" name="id" value="<?= $data['id']?>">
 						<?php endif; ?>
 						<input required type="hidden" name="product_id" value="<?= isset($data['product_id']) ? $data['product_id']: '' ?>">
-						<?php if ($user['role'] == 'admin'): ?>
+						<?php if ($hasAccess): ?>
 							<input required type="hidden" name="customer_id" value="<?= isset($data['customer_id']) ? $data['customer_id']: '' ?>">
 							<?php if (isset($data['status']) && $data['status'] == 'Request'): ?>
 								<input required type="hidden" name="is_request" value="<?= isset($data['product_id']) ? $data['product_id']: '' ?>">
@@ -29,13 +29,13 @@ Create Order
 						<?php else: ?>
 							<input required type="hidden" name="customer_id" value="<?= isset($user['id']) ? $user['id']: '' ?>">
 						<?php endif ?>
-						<div class="col-<?= $user['role'] == 'admin' ? '6': '12' ?>">
+						<div class="col-<?= $hasAccess ? '6': '12' ?>">
 							<div class="form-group">
 								<label for="product-complete" class="form-control-label">Product</label>
 								<input name="products_name" value="<?= isset($data['products_name']) ? $data['products_name']: '' ?>" class="form-control form-control-alternative" type="text" id="product-complete" placeholder="Required" required>
 							</div>
 						</div>
-						<?php if ($user['role'] == 'admin'): ?>
+						<?php if ($hasAccess): ?>
 							<div class="col-6">
 								<div class="form-group">
 									<label for="status" class="form-control-label">Status</label>
@@ -60,7 +60,7 @@ Create Order
 								<input id="quantity" value="<?= isset($data['quantity']) ? $data['quantity']: '' ?>" class="form-control form-control-alternative" type="number" placeholder="Required" required name="quantity">
 							</div>
 						</div>
-						<div class="col-md-<?= $user['role'] == 'admin' ? '4': '6' ?>">
+						<div class="col-md-<?= $hasAccess ? '4': '6' ?>">
 							<div class="form-group">
 								<label for="payment_type" class="form-control-label">Payment Type</label>
 								<select name="payment_type" id="payment_type" class="form-control form-control-alternative" required>
@@ -71,7 +71,7 @@ Create Order
 								</select>
 							</div>
 						</div>
-						<?php if ($user['role'] == 'admin'): ?>
+						<?php if ($hasAccess): ?>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="payment_status" class="form-control-label">Payment Status</label>
@@ -84,13 +84,13 @@ Create Order
 								</div>
 							</div>
 						<?php endif ?>
-						<div class="col-md-<?= $user['role'] == 'admin' ? '4': '6' ?>">
+						<div class="col-md-<?= $hasAccess ? '4': '6' ?>">
 							<div class="form-group">
 								<label for="payment_place" class="form-control-label">Payment Place</label>
 								<input id="payment_place" value="<?= isset($data['payment_place']) ? $data['payment_place']: '' ?>" type="text" class="form-control form-control-alternative" name="payment_place" placeholder="Optional" autocomplete="off">
 							</div>
 						</div>
-						<?php if ($user['role'] == 'admin'): ?>
+						<?php if ($hasAccess): ?>
 							<div class="col-6">
 								<div class="form-group">
 									<label for="discount" class="form-control-label">Discount %</label>

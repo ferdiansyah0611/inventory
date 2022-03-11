@@ -50,6 +50,7 @@ Create User
 									<option value="">-- SELECT --</option>
 									<option value="user">User</option>
 									<option value="customer">Customer</option>
+									<option value="worker">Worker</option>
 									<option value="admin">Admin</option>
 								</select>
 							</div>

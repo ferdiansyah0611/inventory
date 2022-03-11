@@ -12,7 +12,7 @@ class UserController extends BaseController
 		$this->rules = [
 			'username' => 'required|min_length[3]',
 			'email' => 'required|valid_email',
-			'role' => 'required|in_list[admin, user, customer]'
+			'role' => 'required|in_list[admin, user, customer, worker]'
 		];
 		$this->model = new User();
 	}

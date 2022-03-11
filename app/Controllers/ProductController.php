@@ -80,6 +80,9 @@ class ProductController extends BaseController
 	 */
 	public function new()
 	{
+		if($this->user['role'] !== 'admin' && $this->user['role'] !== 'worker'){
+			return redirect()->back();
+		}
 		$data = $this->session->getFlashdata();
 		unset($data['validation']);
 		$this->data['data'] = $data;
@@ -99,6 +102,10 @@ class ProductController extends BaseController
 	public function create()
 	{
 		$data = $this->_wrap();
+
+		if($this->user['role'] !== 'admin' && $this->user['role'] !== 'worker'){
+			return redirect()->back();
+		}
 		if(!isset($data['id'])){
 			$this->rules['image'] = 'uploaded[image]|mime_in[image,image/jpg,image/jpeg,image/gif,image/png,image/webp]';
 		}
@@ -110,7 +117,7 @@ class ProductController extends BaseController
 		}
 		$img = $this->request->getFile('image');
 		if($img->isValid()){
-	        $path = '/uploads/' . date('Ymd');
+	        $path = '/upload/' . date('Ymd');
 	        $name = $img->getRandomName();
 	        if ($img->move(ROOTPATH . 'public' . $path, $name)){
 	            $data['image'] = $path . '/' . $name;
@@ -134,6 +141,9 @@ class ProductController extends BaseController
 	 */
 	public function edit($id = null)
 	{
+		if($this->user['role'] !== 'admin' && $this->user['role'] !== 'worker'){
+			return redirect()->back();
+		}
 		$category = new Category();
 		$brand = new Brand();
 		$this->data['category'] = $category->find();
@@ -159,6 +169,9 @@ class ProductController extends BaseController
 	 */
 	public function delete($id = null)
 	{
+		if($this->user['role'] !== 'admin' && $this->user['role'] !== 'worker'){
+			return redirect()->back();
+		}
 		$model = $this->model->where('id', $id);
 	    unlink(ROOTPATH . 'public' . $model->first()['image']);
 	    $delete = new Product();
@@ -173,5 +186,14 @@ class ProductController extends BaseController
 			->limit(10)
 			->find();
 		return json_encode($model);
+	}
+	public function alert()
+	{
+		$pager = \Config\Services::pager();
+		$data = $this->model->joined(true);
+		$pager->makeLinks($data[3], $data[2], $data[1]);
+		$this->data['list'] = $data[0];
+		$this->data['pager'] = $pager;
+		return view('product/index', $this->data);
 	}
 }

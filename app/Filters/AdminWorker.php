@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class Authorize implements FilterInterface
+class AdminWorker implements FilterInterface
 {
 	/**
 	 * Do whatever processing this filter needs to do.
@@ -27,7 +27,7 @@ class Authorize implements FilterInterface
 	{
 		$session = \Config\Services::session();
 		$role = $session->get('role');
-		if(!($role == 'admin' || $role == 'customer' || $role == 'worker'))
+		if(!($role == 'admin' || $role == 'worker'))
 		{
 			return redirect()->to('/auth/signin');
 		}

@@ -23,7 +23,8 @@ class Home extends BaseController
 		$this->data['count']['product'] = $product->count();
 		$this->data['count']['brand'] = $brand->count();
 		$this->data['count']['order'] = $order->count($this->user);
-		if($this->user['role'] == 'admin'){
+		$this->data['hasAccess'] = $this->user['role'] == 'admin' || $this->user['role'] == 'worker';
+		if($this->data['hasAccess']){
 			$this->data['count']['customer'] = $user->count_customer();
 		}else{
 			$this->data['count']['allorder'] = $order->count_all($this->user);

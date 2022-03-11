@@ -51,7 +51,7 @@ class Product extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	public function joined()
+	public function joined($alert = null)
 	{
 		$page = intval(isset($_GET['page']) ? $_GET['page'] : 1);
 		if($page){
@@ -59,13 +59,15 @@ class Product extends Model
 			->select('products.*, brands.name as brands_name, categories.name as category_name')
 			->join('brands', 'brands.id = products.brand_id')
 			->join('categories', 'categories.id = products.category_id');
+			if ($alert) {
+				$builder->where('quantity <=', 10);
+			}
 			if(isset($_GET['search'])){
 				$builder->like('products.id', $_GET['search']);
 				$builder->orLike('products.name', $_GET['search']);
 				$builder->orLike('categories.name', $_GET['search']);
 				$builder->orLike('products.id', $_GET['search']);
 			}
-			// dd($builder->countAllResults());
 			return [$builder->get(10, $page - 1)->getResult(), $builder->countAllResults(), 10, $page];
 		}
 		return array();
@@ -77,5 +79,11 @@ class Product extends Model
 		$month = $date->format('Y-m-d H:i:s');
 		$data = $this->db->table('products')->where('created_at >=', $month)->where('created_at <=', date('Y-m-d H:i:s'))->countAllResults();
 		return $data;
+	}
+	public function alert()
+	{
+		$builder = $this->db->table('products');
+		$builder->where('quantity <=', 10);
+		return $builder->countAllResults();
 	}
 }

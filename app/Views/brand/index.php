@@ -17,9 +17,7 @@ Brand
 						</ol>
 					</nav>
 				</div>
-				<div class="col-lg-6 col-5 text-right">
-					<a href="<?= route_to($controller . '::new') ?>" class="btn btn-sm btn-neutral">New</a>
-				</div>
+				<?= $this->include('component/header-left') ?>
 			</div>
 		</div>
 	</div>

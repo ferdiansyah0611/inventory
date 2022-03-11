@@ -18,7 +18,9 @@ Product
 					</nav>
 				</div>
 				<div class="col-lg-6 col-5 text-right">
-					<a href="<?= route_to($controller . '::new') ?>" class="btn btn-sm btn-neutral">New</a>
+					<?php if ($user['role'] == 'admin' || $user['role'] == 'worker'): ?>
+						<a href="<?= route_to($controller . '::new') ?>" class="btn btn-sm btn-neutral">New</a>
+					<?php endif ?>
 				</div>
 			</div>
 		</div>
@@ -47,7 +49,7 @@ Product
 							<th scope="col" class="sort">Quantity</th>
 							<th scope="col" class="sort">Rate</th>
 							<th scope="col" class="sort">Created</th>
-							<?php if ($user['role'] == 'admin'): ?>
+							<?php if ($user['role'] == 'admin' || $user['role'] == 'worker'): ?>
 								<th scope="col" class="sort"></th>
 							<?php endif ?>
 						</tr>
@@ -73,7 +75,7 @@ Product
 							<td>
 								<?= $data->created_at ?>
 							</td>
-							<?php if ($user['role'] == 'admin'): ?>
+							<?php if ($user['role'] == 'admin' || $user['role'] == 'worker'): ?>
 								<td class="text-right">
 				                    <div class="dropdown">
 				                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -8,6 +8,7 @@ use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
 use App\Filters\Admin;
 use App\Filters\Authorize;
+use App\Filters\AdminWorker;
 
 class Filters extends BaseConfig
 {
@@ -23,6 +24,7 @@ class Filters extends BaseConfig
 		'honeypot' => Honeypot::class,
 		'admin' => Admin::class,
 		'authorize' => Authorize::class,
+		'adminworker' => AdminWorker::class,
 	];
 
 	/**
@@ -33,12 +35,12 @@ class Filters extends BaseConfig
 	 */
 	public $globals = [
 		'before' => [
-			'honeypot',
+			// 'honeypot',
 			'csrf',
 		],
 		'after'  => [
 			'toolbar',
-			'honeypot',
+			// 'honeypot',
 		],
 	];
 

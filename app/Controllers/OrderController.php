@@ -24,6 +24,10 @@ class OrderController extends BaseController
 		];
 		$this->model = new Order();
 	}
+	public function _access()
+	{
+		$this->data['hasAccess'] = $this->user['role'] == 'admin' || $this->user['role'] == 'worker';
+	}
 	public function _wrap()
 	{
 		$request = $this->request;
@@ -89,6 +93,7 @@ class OrderController extends BaseController
 	 */
 	public function new()
 	{
+		$this->_access();
 		$this->_product();
 		$data = $this->session->getFlashdata();
 		unset($data['validation']);
@@ -162,6 +167,10 @@ class OrderController extends BaseController
 	 */
 	public function edit($id = null)
 	{
+		if($this->user['role'] !== 'admin' && $this->user['role'] !== 'worker'){
+			return redirect()->back();
+		}
+		$this->_access();
 		$this->_product();
 		$this->data['data'] = $this->model->where('orders.id', $id)
 			->select('orders.*, products.name as products_name, users.username as customer_name')
@@ -188,6 +197,9 @@ class OrderController extends BaseController
 	 */
 	public function delete($id = null)
 	{
+		if($this->user['role'] !== 'admin' && $this->user['role'] !== 'worker'){
+			return redirect()->back();
+		}
 		$order = new Order();
 		$find = $order->where('id', $id)->first();
 		if($find['status'] !== 'Request' && $find['status'] !== 'Cancel'){
@@ -199,5 +211,14 @@ class OrderController extends BaseController
 		}
 		$this->model->where('id', $id)->delete();
 		return redirect()->back();
+	}
+	public function requested()
+	{
+		$pager = \Config\Services::pager();
+		$data = $this->model->joined($this->user, true);
+		$pager->makeLinks($data[3], $data[2], $data[1]);
+		$this->data['list'] = $data[0];
+		$this->data['pager'] = $pager;
+		return view('order/index', $this->data);
 	}
 }

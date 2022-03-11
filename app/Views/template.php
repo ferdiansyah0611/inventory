@@ -66,9 +66,11 @@
                 </a>
                 <div class="collapse" id="navbar-Brand" style="">
                   <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                      <a href="<?= route_to('App\Controllers\BrandController::new') ?>" class="nav-link">Create</a>
-                    </li>
+                    <?php if ($user['role'] == 'admin'): ?>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\BrandController::new') ?>" class="nav-link">Create</a>
+                      </li>
+                    <?php endif ?>
                     <li class="nav-item">
                       <a href="<?= route_to('App\Controllers\BrandController::index') ?>" class="nav-link">Data</a>
                     </li>
@@ -82,9 +84,11 @@
                 </a>
                 <div class="collapse" id="navbar-Category" style="">
                   <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                      <a href="<?= route_to('App\Controllers\CategoryController::new') ?>" class="nav-link">Create</a>
-                    </li>
+                    <?php if ($user['role'] == 'admin'): ?>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\CategoryController::new') ?>" class="nav-link">Create</a>
+                      </li>
+                    <?php endif ?>
                     <li class="nav-item">
                       <a href="<?= route_to('App\Controllers\CategoryController::index') ?>" class="nav-link">Data</a>
                     </li>
@@ -95,12 +99,25 @@
                 <a class="nav-link collapsed<?= $active == 'Product' ? ' active': '' ?>" href="#navbar-Product" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Product">
                   <i class="ni ni-bag-17 text-primary"></i>
                   <span class="nav-link-text">Product</span>
+                  <?php if (isset($alertproduct) && ($user['role'] == 'admin' || $user['role'] == 'worker')): ?>
+                    <span class="badge badge-danger ml-2"><?= $alertproduct ?></span>
+                  <?php endif ?>
                 </a>
                 <div class="collapse" id="navbar-Product" style="">
                   <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                      <a href="<?= route_to('App\Controllers\ProductController::new') ?>" class="nav-link">Create</a>
-                    </li>
+                    <?php if (isset($alertproduct) && ($user['role'] == 'admin' || $user['role'] == 'worker')): ?>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\ProductController::alert') ?>" class="nav-link">
+                          Alert
+                            <span class="badge badge-danger ml-2"><?= $alertproduct ?></span>
+                        </a>
+                      </li>
+                    <?php endif ?>
+                    <?php if ($user['role'] == 'admin' || $user['role'] == 'worker'): ?>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\ProductController::new') ?>" class="nav-link">Create</a>
+                      </li>
+                    <?php endif ?>
                     <li class="nav-item">
                       <a href="<?= route_to('App\Controllers\ProductController::index') ?>" class="nav-link">Data</a>
                     </li>
@@ -111,9 +128,20 @@
                 <a class="nav-link collapsed<?= $active == 'Order' ? ' active': '' ?>" href="#navbar-Order" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Order">
                   <i class="ni ni-delivery-fast text-primary"></i>
                   <span class="nav-link-text">Order</span>
+                  <?php if (isset($requestproduct) && ($user['role'] == 'admin' || $user['role'] == 'worker')): ?>
+                    <span class="badge badge-info ml-2"><?= $requestproduct ?></span>
+                  <?php endif ?>
                 </a>
                 <div class="collapse" id="navbar-Order" style="">
                   <ul class="nav nav-sm flex-column">
+                    <?php if (isset($requestproduct) && ($user['role'] == 'admin' || $user['role'] == 'worker')): ?>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\OrderController::requested') ?>" class="nav-link">
+                          New Request
+                            <span class="badge badge-info ml-2"><?= $requestproduct ?></span>
+                        </a>
+                      </li>
+                    <?php endif ?>
                     <li class="nav-item">
                       <a href="<?= route_to('App\Controllers\OrderController::new') ?>" class="nav-link">Create</a>
                     </li>
@@ -123,7 +151,10 @@
                   </ul>
                 </div>
               </li>
-              <?php if($user['role'] == 'admin'): ?>
+            </ul>
+            <?php if($user['role'] == 'admin'): ?>
+              <hr class="my-3">
+              <ul class="navbar-nav">
                 <li class="nav-item">
                   <a class="nav-link collapsed<?= $active == 'User' ? ' active': '' ?>" href="#navbar-User" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-User">
                     <i class="ni ni-single-02 text-primary"></i>
@@ -140,10 +171,8 @@
                     </ul>
                   </div>
                 </li>
-              <?php endif; ?>
-            </ul>
-            <!-- Divider -->
-            <hr class="my-3">
+              </ul>
+            <?php endif; ?>
           </div>
         </div>
       </div>

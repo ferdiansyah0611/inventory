@@ -63,6 +63,9 @@ class CategoryController extends BaseController
 	 */
 	public function new()
 	{
+		if($this->user['role'] !== 'admin'){
+			return redirect()->back();
+		}
 		$data = $this->session->getFlashdata();
 		unset($data['validation']);
 		$this->data['data'] = $data;
@@ -76,6 +79,9 @@ class CategoryController extends BaseController
 	 */
 	public function create()
 	{
+		if($this->user['role'] !== 'admin'){
+			return redirect()->back();
+		}
 		$validate = $this->validate($this->rules);
 		if(!$validate){
 			$this->session->setFlashdata('validation', $this->validator->getErrors());
@@ -95,6 +101,9 @@ class CategoryController extends BaseController
 	 */
 	public function edit($id = null)
 	{
+		if($this->user['role'] !== 'admin'){
+			return redirect()->back();
+		}
 		$this->data['data'] = $this->model->where('id', $id)->first();
 		return view('brand/create', $this->data);
 	}
@@ -106,7 +115,7 @@ class CategoryController extends BaseController
 	 */
 	public function update($id = null)
 	{
-		return redirect()->back();
+		//
 	}
 
 	/**
@@ -116,6 +125,9 @@ class CategoryController extends BaseController
 	 */
 	public function delete($id = null)
 	{
+		if($this->user['role'] !== 'admin'){
+			return redirect()->back();
+		}
 		$this->model->where('id', $id)->delete();
 		return redirect()->back();
 	}

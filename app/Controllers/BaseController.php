@@ -49,6 +49,14 @@ class BaseController extends Controller
 			'role' => $this->session->get('role'),
 		];
 		$this->data['user'] = $this->user;
+		if($this->user['id'] && ($this->user['role'] == 'admin' || $this->user['role'] == 'worker')){
+			$product = new \App\Models\Product;
+			$order = new \App\Models\Order;
+			$data = $product->alert();
+			$requestproduct = $order->alert();
+			$this->data['alertproduct'] = $data;
+			$this->data['requestproduct'] = $requestproduct;
+		}
 	}
 	public function hande_message($data)
 	{

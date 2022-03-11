@@ -55,7 +55,7 @@ class Order extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	public function joined($user)
+	public function joined($user, $requested = null)
 	{
 		$page = intval(isset($_GET['page']) ? $_GET['page'] : 1);
 		if($page){
@@ -63,6 +63,9 @@ class Order extends Model
 			->select('orders.*, products.name as products_name, users.username as customer_name')
 			->join('users', 'users.id = orders.customer_id')
 			->join('products', 'products.id = orders.product_id');
+			if($requested){
+				$builder->where('orders.status', 'Request');
+			}
 			if($user['role'] == 'customer'){
 				$builder->where('customer_id', $user['id']);
 			}
@@ -96,6 +99,12 @@ class Order extends Model
 		if($user['role'] == 'customer'){
 			$data->where('customer_id', $user['id']);
 		}
+		return $data->countAllResults();
+	}
+	public function alert($user = null)
+	{
+		$data = $this->db->table('orders');
+		$data->where('status', 'Request');
 		return $data->countAllResults();
 	}
 	public function price_mount($user)

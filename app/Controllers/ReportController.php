@@ -20,7 +20,10 @@ class ReportController extends BaseController
     		->select('orders.*, products.name as products_name, users.username as customer_name, users.email as customer_email')
             ->join('users', 'users.id = orders.customer_id')
 			->join('products', 'products.id = orders.product_id')->first();
-		$date = date_create(date('Y-m-d'));
+		if(!($this->user['role'] == 'admin' || $this->user['role'] == 'worker') && $data['data']['customer_id'] !== $this->user['id']){
+            return redirect()->back();
+        }
+        $date = date_create(date('Y-m-d'));
 		$date->modify('+1 month');
 		$due = $date->format('Y-m-d H:i:s');
 		$data['data']['due'] = $due;
@@ -35,6 +38,9 @@ class ReportController extends BaseController
     }
     public function today_report()
     {
+        if(!($this->user['role'] == 'admin' || $this->user['role'] == 'worker')){
+            return redirect()->back();
+        }
     	$order = new Order();
     	$list = $order
     		->select('orders.*, products.name as products_name')

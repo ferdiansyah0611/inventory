@@ -47,7 +47,7 @@ Order
 							<th scope="col" class="sort">Status</th>
 							<th scope="col" class="sort">Total</th>
 							<th scope="col" class="sort">Order</th>
-							<?php if ($user['role'] == 'admin'): ?>
+							<?php if ($user['role'] == 'admin' || $user['role'] == 'worker'): ?>
 								<th scope="col" class="sort"></th>
 							<?php endif ?>
 						</tr>
@@ -84,7 +84,7 @@ Order
 							<td>
 								<?= $data->order_at ? esc($data->order_at): '-' ?>
 							</td>
-							<?php if ($user['role'] == 'admin'): ?>
+							<?php if ($user['role'] == 'admin' || $user['role'] == 'worker'): ?>
 								<td class="text-right">
 				                    <div class="dropdown">
 				                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
