@@ -22,8 +22,8 @@
   <!-- Navbar -->
   <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light">
     <div class="container">
-      <a class="navbar-brand" href="dashboard.html">
-        <img src="<?= base_url('argon') ?>/assets/img/brand/white.png">
+      <a class="navbar-brand" href="#">
+        <img src="<?= base_url() ?>/my-logo.png">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -125,7 +125,7 @@
         <div class="col-xl-6">
           <ul class="nav nav-footer justify-content-center justify-content-xl-end">
             <li class="nav-item">
-              <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
+              <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Design by Creative Tim</a>
             </li>
             <li class="nav-item">
               <a href="https://ferdianyah.web.app" class="nav-link" target="_blank">About Us</a>

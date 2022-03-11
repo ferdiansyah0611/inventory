@@ -36,7 +36,7 @@
         <!-- Brand -->
         <div class="sidenav-header d-flex align-items-center">
           <a class="navbar-brand" href="javascript:void(0)">
-            <img src="<?= base_url('argon') ?>/assets/img/brand/blue.png" class="navbar-brand-img" alt="...">
+            <img src="<?= base_url() ?>/my-logo-blue.png" class="navbar-brand-img" alt="...">
           </a>
           <div class="ml-auto">
             <div class="sidenav-toggler d-none d-xl-block active" data-action="sidenav-unpin" data-target="#sidenav-main">
@@ -261,7 +261,7 @@
             <div class="col-lg-6">
               <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                 <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Creative Tim</a>
+                  <a href="https://www.creative-tim.com" class="nav-link" target="_blank">Design by Creative Tim</a>
                 </li>
                 <li class="nav-item">
                   <a href="https://ferdianyah.web.app" class="nav-link" target="_blank">About Us</a>
