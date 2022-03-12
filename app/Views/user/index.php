@@ -76,7 +76,9 @@ User
 				                    </a>
 				                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 				                        <a class="dropdown-item" href="<?= route_to($controller . '::edit', $data['id']) ?>">Edit</a>
-				                        <a class="dropdown-item pointer deleted" data-id="<?= $data['id']?>">Remove</a>
+				                        <?php if (!($data['id'] == $user['id'])): ?>
+				                        	<a class="dropdown-item pointer deleted" data-id="<?= $data['id']?>">Remove</a>
+				                        <?php endif ?>
 				                    </div>
 				                </div>
 				            </td>
