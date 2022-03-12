@@ -77,7 +77,7 @@ Create Order
 									<label for="payment_status" class="form-control-label">Payment Status</label>
 									<select name="payment_status" id="payment_status" class="form-control form-control-alternative" required>
 										<option value="">-- SELECT --</option>
-										<?php foreach (array('Failed', 'Waiting', 'Success') as $key => $value): ?>
+										<?php foreach (array('Failed', 'Debt', 'Waiting', 'Success') as $key => $value): ?>
 											<option value="<?= $value ?>"><?= $value ?></option>
 										<?php endforeach ?>
 									</select>

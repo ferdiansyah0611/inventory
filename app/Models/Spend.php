@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class User extends Model
+class Spend extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'users';
+	protected $table                = 'spends';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDelete        = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = ['username', 'email', 'password', 'role', 'place', 'phone', 'created_at', 'updated_at'];
+	protected $allowedFields        = ['name', 'total', 'date', 'created_at', 'updated_at'];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -39,21 +39,4 @@ class User extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-	public function count()
-	{
-		$date = date_create(date('Y-m-d'));
-		$date->modify('-1 month');
-		$month = $date->format('Y-m-d H:i:s');
-		$data = $this->db->table('users')->where('created_at >=', $month)->where('created_at <=', date('Y-m-d H:i:s'))->countAllResults();
-		return $data;
-	}
-	public function count_customer()
-	{
-		$date = date_create(date('Y-m-d'));
-		$date->modify('-1 month');
-		$month = $date->format('Y-m-d H:i:s');
-		$data = $this->db->table('users')->where('role', 'customer')->where('created_at >=', $month)->where('created_at <=', date('Y-m-d H:i:s'))->countAllResults();
-		return $data;
-	}
 }

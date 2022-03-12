@@ -181,10 +181,10 @@ Dashboard
 								<?= $data['name'] ?>
 							</td>
 							<td>
-								<?= $data['rate'] ?>
+								$<?= number_format($data['rate'], 0) ?>
 							</td>
 							<td>
-								$<?= number_format($data['quantity'], 0) ?>
+								<?= $data['quantity'] ?>
 							</td>
 							<td>
 								<?= $data['created_at'] ?>

@@ -18,7 +18,7 @@ class OrderController extends BaseController
 			'status' => 'required|in_list[Done,Confirm,Delivery,Cancel,Request]',
 			'note' => 'permit_empty',
 			'payment_type' => 'required',
-			'payment_status' => 'required',
+			'payment_status' => 'required|in_list[Failed,Debt,Waiting,Success]',
 			'payment_place' => 'permit_empty',
 			'order_at' => 'permit_empty',
 		];

@@ -10,9 +10,11 @@ class UserController extends BaseController
 		$this->data['active'] = 'User';
 		$this->data['controller'] = 'App\Controllers\UserController';
 		$this->rules = [
-			'username' => 'required|min_length[3]',
+			'username' => 'required|string|min_length[3]',
 			'email' => 'required|valid_email',
-			'role' => 'required|in_list[admin, user, customer, worker]'
+			'role' => 'required|in_list[admin, user, customer, worker]',
+			'place' => 'required|string|min_length[3]',
+			'phone' => 'required|integer',
 		];
 		$this->model = new User();
 	}
@@ -23,6 +25,8 @@ class UserController extends BaseController
 			'username' => $request->getPost('username'),
 			'email' => $request->getPost('email'),
 			'role' => $request->getPost('role'),
+			'place' => $request->getPost('place'),
+			'phone' => $request->getPost('phone'),
 		];
 		if($request->getPost('id')){
 			$data['id'] = $request->getPost('id');
@@ -92,13 +96,14 @@ class UserController extends BaseController
 		$validate = $this->validate($this->rules);
 		if(!$validate){
 			$this->session->setFlashdata('validation', $this->validator->getErrors());
-			$this->session->setFlashdata($_POST);
+			if(!$data['id']){
+				$this->session->setFlashdata($_POST);
+			}
 			return redirect()->back();
 		}
 		// edit
 		if(isset($data['id'])){
 			if(count($mail) == 1){
-				// dd($mail);
 				if(isset($mail[0]['id']) && $data['id'] == $mail[0]['id']){
 					$this->model->save($data);
 					return redirect()->back();
@@ -156,5 +161,91 @@ class UserController extends BaseController
 			->limit(10)
 			->get()->getResult();
 		return json_encode($model);
+	}
+	public function customer()
+	{
+		$this->data['active'] = 'Customer';
+
+		$search = $this->request->getGet('search');
+		$this->model->where('role', 'customer');
+		if($search){
+			$this->model->like('id', $search);
+			$this->model->orLike('username', $search);
+			$this->model->orLike('email', $search);
+			$this->model->orLike('role', $search);
+		}
+		$this->data['list'] = $this->model->paginate(10);
+		$this->data['pager'] = $this->model->pager;
+		return view('user/index', $this->data);
+	}
+	public function worker()
+	{
+		$this->data['active'] = 'Worker';
+
+		$search = $this->request->getGet('search');
+		$this->model->where('role', 'worker');
+		if($search){
+			$this->model->like('id', $search);
+			$this->model->orLike('username', $search);
+			$this->model->orLike('email', $search);
+			$this->model->orLike('role', $search);
+		}
+		$this->data['list'] = $this->model->paginate(10);
+		$this->data['pager'] = $this->model->pager;
+		return view('user/index', $this->data);
+	}
+	public function profile()
+	{
+		$request = $this->request;
+		$method = $request->getMethod();
+		$this->data['data'] = $this->model->where('id', $this->user['id'])->first();
+
+		if ($method == 'post') {
+			$data = $this->_wrap();
+			unset($data['password']);
+
+			$data['id'] = $this->user['id'];
+			$data['role'] = $this->user['role'];
+			$data['email'] = $this->user['email'];
+			$old_password = $request->getPost('old_password');
+			$new_password = $request->getPost('new_password');
+
+			unset($this->rules['email']);
+			unset($this->rules['password']);
+			unset($this->rules['role']);
+
+			if($old_password){
+				$this->rules['old_password'] = 'required|min_length[8]|string';
+				$this->rules['new_password'] = 'required|min_length[8]|string';
+			}
+			$validate = $this->validate($this->rules);
+
+			$mail = $this->data['data'];
+			if(!$validate){
+				$this->session->setFlashdata('validation', $this->validator->getErrors());
+				if(!$data['id']){
+					$this->session->setFlashdata($_POST);
+				}
+				return redirect()->back();
+			}
+
+			if ($old_password && $new_password) {
+				if (password_verify($old_password, $mail['password'])) {
+					$data['password'] = password_hash($new_password, PASSWORD_DEFAULT);
+				}
+			}
+
+			$data['updated_at'] = date("Y-m-d H:i:s");
+			$this->model->save($data);
+			$user = new User();
+			$user = $user->where('email', $this->user['email'])->first();
+			unset($user['password']);
+			$this->session->set($user);
+			return redirect()->back();
+		}
+		if ($method == 'get') {
+			$this->data['active'] = 'Profile';
+			return view('profile', $this->data);
+		}
 	}
 }

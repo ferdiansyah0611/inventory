@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Today Report</title>
+        <title><?= $title ?></title>
         <style>
         .invoice-box {
         max-width: 800px;
@@ -112,21 +112,47 @@
                     </td>
                 </tr>
                 <tr class="heading">
-                    <td>Client, Item</td>
+                    <td>Order</td>
                     <td>Price</td>
                 </tr>
                 <?php foreach ($list as $key => $value): ?>
                 <tr class="item">
                     <td>
-                        <?= $value->client_name ?> | <?= $value->products_name ?> (<?= $value->quantity ?> item)
+                        <?= $value->customer_name ?> | <?= $value->products_name ?> (<?= $value->quantity ?> item)
                     </td>
                     <td>$<?= number_format($value->price_total, 0) ?></td>
                 </tr>
                 <?php endforeach ?>
-                <tr class="total">
+                <tr>
                     <td></td>
-                    <td>Total: $ <?= number_format($price_total, 0) ?></td>
+                    <td style="font-weight: bold;">Total: $<?= number_format($price_total, 0) ?></td>
                 </tr>
+                <?php if (isset($spend)): ?>
+                    <tr class="heading">
+                        <td>Spend</td>
+                        <td>Price</td>
+                    </tr>
+                    <?php foreach ($spend as $key => $value): ?>
+                    <tr class="item">
+                        <td>
+                            <?= $value['name'] ?>
+                        </td>
+                        <td>$<?= number_format($value['total'], 0) ?></td>
+                    </tr>
+                    <?php endforeach ?>
+                    <tr>
+                        <td></td>
+                        <td style="font-weight: bold;">Total: $<?= number_format($totalspend, 0) ?></td>
+                    </tr>
+                    <tr class="heading">
+                        <td>Net Profit</td>
+                        <td style="font-weight: bold;">$<?= number_format($netprofit, 0) ?></td>
+                    </tr>
+                    <tr class="heading">
+                        <td>Net Profit Margin</td>
+                        <td style="font-weight: bold;">$<?= number_format($netprofitmargin, 0) ?></td>
+                    </tr>
+                <?php endif ?>
             </table>
         </div>
     </body>

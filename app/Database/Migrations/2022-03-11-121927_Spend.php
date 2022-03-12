@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class User extends Migration
+class Spend extends Migration
 {
 	public function up()
 	{
@@ -15,29 +15,16 @@ class User extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'username' => [
+            'name' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
-            'email' => [
+            'total' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255
             ],
-            'password' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255
-            ],
-            'role' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255
-            ],
-            'place' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255
-            ],
-            'phone' => [
-                'type' => 'INT',
-                'constraint' => 20
+            'date' => [
+                'type' => 'DATETIME',
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -48,11 +35,11 @@ class User extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('users');
+        $this->forge->createTable('spends');
 	}
 
 	public function down()
 	{
-		$this->forge->dropTable('users');
+		$this->forge->dropTable('spends');
 	}
 }

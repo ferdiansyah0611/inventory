@@ -153,9 +153,9 @@
               </li>
             </ul>
             <?php if($user['role'] == 'admin'): ?>
-              <hr class="my-3">
               <ul class="navbar-nav">
                 <li class="nav-item">
+                  <hr class="my-3">
                   <a class="nav-link collapsed<?= $active == 'User' ? ' active': '' ?>" href="#navbar-User" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-User">
                     <i class="ni ni-single-02 text-primary"></i>
                     <span class="nav-link-text">User</span>
@@ -167,6 +167,65 @@
                       </li>
                       <li class="nav-item">
                         <a href="<?= route_to('App\Controllers\UserController::index') ?>" class="nav-link">Data</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link collapsed<?= $active == 'Customer' ? ' active': '' ?>" href="#navbar-Customer" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Customer">
+                    <i class="ni ni-circle-08 text-primary"></i>
+                    <span class="nav-link-text">Customer</span>
+                  </a>
+                  <div class="collapse" id="navbar-Customer" style="">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\UserController::customer') ?>" class="nav-link">Data</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link collapsed<?= $active == 'Worker' ? ' active': '' ?>" href="#navbar-Worker" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Worker">
+                    <i class="ni ni-settings text-primary"></i>
+                    <span class="nav-link-text">Worker</span>
+                  </a>
+                  <div class="collapse" id="navbar-Worker" style="">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\UserController::worker') ?>" class="nav-link">Data</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <hr class="my-3">
+                  <a class="nav-link collapsed<?= $active == 'Spending' ? ' active': '' ?>" href="#navbar-Spending" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Spending">
+                    <i class="ni ni-money-coins text-primary"></i>
+                    <span class="nav-link-text">Spending</span>
+                  </a>
+                  <div class="collapse" id="navbar-Spending" style="">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\SpendController::new') ?>" class="nav-link">Create</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\SpendController::index') ?>" class="nav-link">Data</a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link collapsed<?= $active == 'Report' ? ' active': '' ?>" href="#navbar-Report" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-Report">
+                    <i class="ni ni-notification-70 text-primary"></i>
+                    <span class="nav-link-text">Report</span>
+                  </a>
+                  <div class="collapse" id="navbar-Report" style="">
+                    <ul class="nav nav-sm flex-column">
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\ReportController::today_report') ?>" class="nav-link">Today</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\ReportController::today_report') ?>?at=month" class="nav-link">This Month</a>
                       </li>
                     </ul>
                   </div>
@@ -234,6 +293,10 @@
                   <a href="#" class="dropdown-item">
                     <i class="ni ni-settings-gear-65"></i>
                     <span>Settings</span>
+                  </a>
+                  <a href="<?= route_to('App\Controllers\UserController::profile') ?>" class="dropdown-item">
+                    <i class="ni ni-circle-08"></i>
+                    <span>Profile</span>
                   </a>
                   <div class="dropdown-divider"></div>
                   <a href="<?= route_to('logout') ?>" class="dropdown-item">

@@ -18,7 +18,7 @@ Create User
 					<?= $this->include('component/alert-form') ?>
 					<div class="row">
 						<?php if(isset($data['id'])): ?>
-						<input type="hidden" name="id" value="<?= $data['id']?>">
+							<input type="hidden" name="id" value="<?= $data['id']?>">
 						<?php endif; ?>
 						<div class="col-6">
 							<div class="form-group">
@@ -55,6 +55,19 @@ Create User
 								</select>
 							</div>
 						</div>
+						<div class="col-6">
+							<div class="form-group">
+								<label for="phone" class="form-control-label">Phone</label>
+								<input min="0" autocomplete="off" id="phone" value="<?= isset($data['phone']) ? $data['phone']: '' ?>" type="number" class="form-control form-control-alternative" name="phone" placeholder="Required" required>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-group">
+								<label for="place" class="form-control-label">Place</label>
+								<input autocomplete="off" id="place" value="<?= isset($data['place']) ? $data['place']: '' ?>" type="text" class="form-control form-control-alternative" name="place" placeholder="Required" required>
+							</div>
+						</div>
+						<div class="col-6"></div>
 						<div class="col-12">
 							<button type="submit" class="btn btn-primary">Save</button>
 						</div>

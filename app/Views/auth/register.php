@@ -44,6 +44,22 @@ Signup to invoice web
             <input class="form-control" name="password" placeholder="Password" type="password">
           </div>
         </div>
+        <div class="form-group">
+          <div class="input-group input-group-merge input-group-alternative">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="ni ni-tablet-button"></i></span>
+            </div>
+            <input class="form-control" name="phone" placeholder="Phone" type="number">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group input-group-merge input-group-alternative">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="ni ni-world"></i></span>
+            </div>
+            <input class="form-control" name="place" placeholder="Place" type="text">
+          </div>
+        </div>
         <div class="custom-control custom-control-alternative custom-checkbox">
           <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
           <label class="custom-control-label" for=" customCheckLogin">

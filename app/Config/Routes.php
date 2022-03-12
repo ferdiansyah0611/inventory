@@ -43,6 +43,9 @@ $routes->group('', ['filter' => 'authorize'], function($routes){
     $routes->get('/product/search', 'ProductController::search');
     $routes->get('/product/alert', 'ProductController::alert', ['filter' => 'adminworker']);
     $routes->get('/order/request', 'OrderController::requested', ['filter' => 'adminworker']);
+    $routes->get('/customer', 'UserController::customer', ['filter' => 'adminworker']);
+    $routes->get('/worker', 'UserController::worker', ['filter' => 'adminworker']);
+    $routes->match(['get', 'post'], '/profile', 'UserController::profile');
 
     $routes->group('report', function($routes){
         $routes->get('invoice/(:num)', 'ReportController::invoice/$1');
@@ -54,6 +57,10 @@ $routes->group('', ['filter' => 'authorize'], function($routes){
     });
     $routes->resource('brand', [
         'controller' => 'BrandController',
+        'except' => 'show,update'
+    ]);
+    $routes->resource('spend', [
+        'controller' => 'SpendController',
         'except' => 'show,update'
     ]);
     $routes->resource('category', [
