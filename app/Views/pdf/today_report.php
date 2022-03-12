@@ -145,12 +145,8 @@
                         <td style="font-weight: bold;">Total: $<?= number_format($totalspend, 0) ?></td>
                     </tr>
                     <tr class="heading">
-                        <td>Net Profit</td>
-                        <td style="font-weight: bold;">$<?= number_format($netprofit, 0) ?></td>
-                    </tr>
-                    <tr class="heading">
-                        <td>Net Profit Margin</td>
-                        <td style="font-weight: bold;">$<?= number_format($netprofitmargin, 0) ?></td>
+                        <td>Profit</td>
+                        <td style="font-weight: bold;">$<?= number_format($profit, 0) ?></td>
                     </tr>
                 <?php endif ?>
             </table>

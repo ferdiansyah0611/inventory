@@ -227,10 +227,14 @@
                       <li class="nav-item">
                         <a href="<?= route_to('App\Controllers\ReportController::today_report') ?>?at=month" class="nav-link">This Month</a>
                       </li>
+                      <li class="nav-item">
+                        <a href="<?= route_to('App\Controllers\ReportController::today_report') ?>?at=year" class="nav-link">This Year</a>
+                      </li>
                     </ul>
                   </div>
                 </li>
               </ul>
+              <div class="my-5"></div>
             <?php endif; ?>
           </div>
         </div>

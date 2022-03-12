@@ -55,11 +55,13 @@ class ReportController extends BaseController
             ->where('orders.payment_status', 'Success');
         $sum = new Order();
     	$sum->selectSum('price_total')->where('payment_status', 'Success');
-        if ($at == 'month') {
-            $list->where('MONTH(orders.created_at)', date('m'));
-    		$sum->where('MONTH(orders.created_at)', date('m'));
+        if ($at == 'month' || $at == 'year') {
+            $query = $at == 'month' ? 'MONTH(orders.created_at)': 'YEAR(orders.created_at)';
+            $dateSelect = $at == 'month' ? 'm': 'Y';
+            $list->where($query, date($dateSelect));
+            $sum->where($query, date($dateSelect));
         }
-        if (!($at == 'month')) {
+        else{
 			$list->where('DAY(orders.created_at)', date('d'));
             $sum->where('DAY(orders.created_at)', date('d'));
         }
@@ -69,15 +71,16 @@ class ReportController extends BaseController
     	$data['list'] = $list;
     	$data['price_total'] = $sum['price_total'];
 
-        if ($at == 'month') {
-            $data['title'] = 'Month Report';
-            $filename = date('y-m-d'). '_report_month';
-            $valuespend = $spend->where('DATE(created_at)', date('Y-m-d'))->find();
-            $totalspend = $spend->where('DATE(created_at)', date('Y-m-d'))->selectSum('total')->first();
+        if ($at == 'month' || $at == 'year') {
+            $query = $at == 'month' ? 'MONTH(created_at)': 'YEAR(created_at)';
+            $dateSelect = $at == 'month' ? 'm': 'Y';
+            $data['title'] = $at == 'month' ? 'Month Report' : 'Year Report';
+            $filename = $at == 'month' ? date('y-m-d'). '_report_month': date('y-m-d'). '_report_year_' . date('Y');
+            $valuespend = $spend->where($query, date($dateSelect))->find();
+            $totalspend = $spend->where($query, date($dateSelect))->selectSum('total')->first();
             $data['spend'] = $valuespend;
             $data['totalspend'] = $totalspend['total'];
-            $data['netprofit'] = $data['price_total'] - $data['totalspend'];
-            $data['netprofitmargin'] = ($data['netprofit'] / $data['price_total']) * 100;
+            $data['profit'] = $data['price_total'] - $data['totalspend'];
         }
 
         $dompdf = new Dompdf();
@@ -85,6 +88,6 @@ class ReportController extends BaseController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $dompdf->stream($filename);
-        return view('pdf/today_report', $data);
+        // return view('pdf/today_report', $data);
     }
 }
