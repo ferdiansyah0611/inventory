@@ -1,6 +1,6 @@
 <?= $this->extend('template') ?>
 <?= $this->section('title') ?>
-Dashboard
+Profile
 <?= $this->endSection() ?>
 <?= $this->section('header') ?>
 <!-- Header -->
