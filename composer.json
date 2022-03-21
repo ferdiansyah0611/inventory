@@ -7,7 +7,8 @@
 	"require": {
 		"php": "^7.2 || ^8.0",
 		"codeigniter4/framework": "^4",
-		"dompdf/dompdf": "^1.2"
+		"dompdf/dompdf": "^1.2",
+		"hermawan/codeigniter4-datatables": "^0.5.4"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9",

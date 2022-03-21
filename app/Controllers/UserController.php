@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\User;
+use \Hermawan\DataTables\DataTable;
 
 class UserController extends BaseController
 {
@@ -48,14 +49,7 @@ class UserController extends BaseController
 	 */
 	public function index()
 	{
-		if(isset($_GET['search'])){
-			$this->model->like('id', $_GET['search']);
-			$this->model->orLike('username', $_GET['search']);
-			$this->model->orLike('email', $_GET['search']);
-			$this->model->orLike('role', $_GET['search']);
-		}
-		$this->data['list'] = $this->model->paginate(10);
-		$this->data['pager'] = $this->model->pager;
+		$this->data['json'] = route_to($this->data['controller'] . '::json');
 		return view('user/index', $this->data);
 	}
 
@@ -165,33 +159,13 @@ class UserController extends BaseController
 	public function customer()
 	{
 		$this->data['active'] = 'Customer';
-
-		$search = $this->request->getGet('search');
-		$this->model->where('role', 'customer');
-		if($search){
-			$this->model->like('id', $search);
-			$this->model->orLike('username', $search);
-			$this->model->orLike('email', $search);
-			$this->model->orLike('role', $search);
-		}
-		$this->data['list'] = $this->model->paginate(10);
-		$this->data['pager'] = $this->model->pager;
+		$this->data['json'] = route_to($this->data['controller'] . '::json_customer');
 		return view('user/index', $this->data);
 	}
 	public function worker()
 	{
 		$this->data['active'] = 'Worker';
-
-		$search = $this->request->getGet('search');
-		$this->model->where('role', 'worker');
-		if($search){
-			$this->model->like('id', $search);
-			$this->model->orLike('username', $search);
-			$this->model->orLike('email', $search);
-			$this->model->orLike('role', $search);
-		}
-		$this->data['list'] = $this->model->paginate(10);
-		$this->data['pager'] = $this->model->pager;
+		$this->data['json'] = route_to($this->data['controller'] . '::json_worker');
 		return view('user/index', $this->data);
 	}
 	public function profile()
@@ -247,5 +221,23 @@ class UserController extends BaseController
 			$this->data['active'] = 'Profile';
 			return view('profile', $this->data);
 		}
+	}
+	public function json()
+	{
+		$db = db_connect();
+    	$builder = $db->table('users')->select('id, username, email, role, created_at');
+    	return DataTable::of($builder)->toJson();
+	}
+	public function json_customer()
+	{
+		$db = db_connect();
+    	$builder = $db->table('users')->select('id, username, email, role, created_at')->where('role', 'customer');
+    	return DataTable::of($builder)->toJson();
+	}
+	public function json_worker()
+	{
+		$db = db_connect();
+    	$builder = $db->table('users')->select('id, username, email, role, created_at')->where('role', 'worker');
+    	return DataTable::of($builder)->toJson();
 	}
 }

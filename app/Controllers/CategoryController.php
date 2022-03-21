@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Category;
+use \Hermawan\DataTables\DataTable;
 
 class CategoryController extends BaseController
 {
@@ -130,5 +131,11 @@ class CategoryController extends BaseController
 		}
 		$this->model->where('id', $id)->delete();
 		return redirect()->back();
+	}
+	public function json()
+	{
+		$db = db_connect();
+    	$builder = $db->table('categories')->select('id, name, status, created_at, updated_at');
+    	return DataTable::of($builder)->toJson();
 	}
 }

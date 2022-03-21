@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\Order;
 use App\Models\Product;
+use \Hermawan\DataTables\DataTable;
 
 class OrderController extends BaseController
 {
@@ -63,11 +64,7 @@ class OrderController extends BaseController
 	 */
 	public function index()
 	{
-		$pager = \Config\Services::pager();
-		$data = $this->model->joined($this->user);
-		$pager->makeLinks($data[3], $data[2], $data[1]);
-		$this->data['list'] = $data[0];
-		$this->data['pager'] = $pager;
+		$this->data['json'] = route_to($this->data['controller'] . '::json');
 		return view('order/index', $this->data);
 	}
 
@@ -214,11 +211,29 @@ class OrderController extends BaseController
 	}
 	public function requested()
 	{
-		$pager = \Config\Services::pager();
-		$data = $this->model->joined($this->user, true);
-		$pager->makeLinks($data[3], $data[2], $data[1]);
-		$this->data['list'] = $data[0];
-		$this->data['pager'] = $pager;
+		$this->data['json'] = route_to($this->data['controller'] . '::json_request');
 		return view('order/index', $this->data);
+	}
+	public function json()
+	{
+		$db = db_connect();
+    	$builder = $db->table('orders')
+			->select('orders.id, products.name, users.username, orders.status, orders.payment_status, orders.discount, orders.price_total, orders.order_at')
+			->join('users', 'users.id = orders.customer_id')
+			->join('products', 'products.id = orders.product_id');
+		if($this->user['role'] == 'customer'){
+			$builder->where('customer_id', $this->user['id']);
+		}
+    	return DataTable::of($builder)->toJson();
+	}
+	public function json_request()
+	{
+		$db = db_connect();
+    	$builder = $db->table('orders')
+			->select('orders.id, products.name, users.username, orders.status, orders.payment_status, orders.discount, orders.price_total, orders.order_at')
+			->join('users', 'users.id = orders.customer_id')
+			->join('products', 'products.id = orders.product_id')
+			->where('orders.status', 'Request');
+    	return DataTable::of($builder)->toJson();
 	}
 }

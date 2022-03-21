@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Spend;
+use \Hermawan\DataTables\DataTable;
 
 class SpendController extends BaseController
 {
@@ -131,5 +132,11 @@ class SpendController extends BaseController
 		}
 		$this->model->where('id', $id)->delete();
 		return redirect()->back();
+	}
+	public function json()
+	{
+		$db = db_connect();
+    	$builder = $db->table('spends')->select('id, name, total, date, created_at');
+    	return DataTable::of($builder)->toJson();
 	}
 }

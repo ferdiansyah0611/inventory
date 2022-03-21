@@ -43,7 +43,7 @@ class AuthController extends BaseController
 			$request = $this->request;
 			$user = new User();
 			$find = $user->where('email', $request->getPost('email'))->first();
-			if(password_verify($request->getPost('password'), $find['password'])){
+			if(isset($find['password']) && password_verify($request->getPost('password'), $find['password'])){
 				$data = $find;
 				$data['password'] = null;
 				$this->session->set($data);

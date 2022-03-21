@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
+use \Hermawan\DataTables\DataTable;
 
 class ProductController extends BaseController
 {
@@ -50,11 +51,7 @@ class ProductController extends BaseController
 	 */
 	public function index()
 	{
-		$pager = \Config\Services::pager();
-		$data = $this->model->joined();
-		$pager->makeLinks($data[3], $data[2], $data[1]);
-		$this->data['list'] = $data[0];
-		$this->data['pager'] = $pager;
+		$this->data['json'] = route_to($this->data['controller'] . '::json');
 		return view('product/index', $this->data);
 	}
 
@@ -195,11 +192,19 @@ class ProductController extends BaseController
 	}
 	public function alert()
 	{
-		$pager = \Config\Services::pager();
-		$data = $this->model->joined(true);
-		$pager->makeLinks($data[3], $data[2], $data[1]);
-		$this->data['list'] = $data[0];
-		$this->data['pager'] = $pager;
+		$this->data['json'] = route_to($this->data['controller'] . '::json_alert');
 		return view('product/index', $this->data);
+	}
+	public function json()
+	{
+		$db = db_connect();
+    	$builder = $db->table('products')->select('id, name, status, quantity, rate, created_at');
+    	return DataTable::of($builder)->toJson();
+	}
+	public function json_alert()
+	{
+		$db = db_connect();
+    	$builder = $db->table('products')->select('id, name, status, quantity, rate, created_at')->where('quantity <=', 10);
+    	return DataTable::of($builder)->toJson();
 	}
 }

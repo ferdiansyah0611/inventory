@@ -32,11 +32,24 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+
 $routes->group('auth', function($routes){
     $routes->match(['get', 'post'], 'signin', 'AuthController::login', ['as' => 'login']);
     $routes->match(['get', 'post'], 'signup', 'AuthController::register', ['as' => 'register']);
     $routes->get('logout', 'AuthController::logout', ['as' => 'logout', 'filter' => 'authorize']);
 });
+
+$routes->get('brand/json', 'BrandController::json', ['filter' => 'authorize']);
+$routes->get('category/json', 'CategoryController::json', ['filter' => 'authorize']);
+$routes->get('product/json', 'ProductController::json', ['filter' => 'authorize']);
+$routes->get('product/alert/json', 'ProductController::json_alert', ['filter' => 'authorize']);
+$routes->get('order/json', 'OrderController::json', ['filter' => 'authorize']);
+$routes->get('order/request/json', 'OrderController::json_request', ['filter' => 'adminworker']);
+$routes->get('user/json', 'UserController::json', ['filter' => 'adminworker']);
+$routes->get('customer/json', 'UserController::json_customer', ['filter' => 'adminworker']);
+$routes->get('worker/json', 'UserController::json_worker', ['filter' => 'adminworker']);
+$routes->get('spend/json', 'SpendController::json', ['filter' => 'adminworker']);
+
 $routes->group('', ['filter' => 'authorize'], function($routes){
     $routes->get('/', 'Home::index');
     $routes->get('/customer/search', 'UserController::search_customer');
@@ -80,6 +93,7 @@ $routes->group('', ['filter' => 'authorize'], function($routes){
         'controller' => 'ProductController',
         'except' => 'update'
     ]);
+    
 });
 
 /*
