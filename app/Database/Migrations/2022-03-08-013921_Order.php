@@ -27,6 +27,10 @@ class Order extends Migration
                 'type' => 'INT',
                 'constraint' => 11
             ],
+            'price_total' => [
+                'type' => 'INT',
+                'constraint' => 255
+            ],
             'discount' => [
                 'type' => 'INT',
                 'constraint' => 11,
@@ -34,7 +38,7 @@ class Order extends Migration
             ],
             'status' => [
                 'type' => 'VARCHAR',
-                'constraint' => 255
+                'constraint' => 255,
                 'null' => true
             ],
             'note' => [
@@ -47,7 +51,7 @@ class Order extends Migration
             ],
             'payment_status' => [
                 'type' => 'VARCHAR',
-                'constraint' => 255
+                'constraint' => 255,
                 'null' => true
             ],
             'payment_place' => [

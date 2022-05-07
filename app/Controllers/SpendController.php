@@ -40,8 +40,8 @@ class SpendController extends BaseController
 	 */
 	public function index()
 	{
-		if(isset($_GET['search'])){
-			$this->model->like('name', $_GET['search']);
+		if(isset($this->request->getGet['search'])){
+			$this->model->like('name', $this->request->getGet['search']);
 		}
 		$this->data['list'] = $this->model->paginate(10);
 		$this->data['pager'] = $this->model->pager;

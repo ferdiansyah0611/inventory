@@ -26,6 +26,7 @@ Profile
 <div class="mt-4">
 	<div class="row">
 		<div class="col-12">
+			<?php if (isset($data['username'])): ?>
 			<div class="card">
 				<div class="card-header">
 					<div class="row align-items-center">
@@ -93,6 +94,7 @@ Profile
 					</form>
 				</div>
 			</div>
+			<?php endif ?>
 		</div>
 	</div>
 </div>

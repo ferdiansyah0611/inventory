@@ -90,7 +90,7 @@ class UserController extends BaseController
 		$validate = $this->validate($this->rules);
 		if(!$validate){
 			$this->session->setFlashdata('validation', $this->validator->getErrors());
-			if(!$data['id']){
+			if(!isset($data['id'])){
 				$this->session->setFlashdata($_POST);
 			}
 			return redirect()->back();
@@ -151,7 +151,7 @@ class UserController extends BaseController
 	public function search_customer()
 	{
 		$model = $this->model->where('role', 'customer')
-			->like('username', $_GET['term'])
+			->like('username', $this->request->getGet('term'))
 			->limit(10)
 			->get()->getResult();
 		return json_encode($model);

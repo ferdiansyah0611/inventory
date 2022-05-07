@@ -199,12 +199,14 @@ class OrderController extends BaseController
 		}
 		$order = new Order();
 		$find = $order->where('id', $id)->first();
-		if($find['status'] !== 'Request' && $find['status'] !== 'Cancel'){
-			$product = new Product();
-			$data = $product->where('id', $find['product_id'])->first();
-			$product->update($find['product_id'], [
-				'quantity' => intval($data['quantity']) + intval($find['quantity'])
-			]);
+		if (isset($find['status'])) {
+			if($find['status'] !== 'Request' && $find['status'] !== 'Cancel'){
+				$product = new Product();
+				$data = $product->where('id', $find['product_id'])->first();
+				$product->update($find['product_id'], [
+					'quantity' => intval($data['quantity']) + intval($find['quantity'])
+				]);
+			}
 		}
 		$this->model->where('id', $id)->delete();
 		return redirect()->back();

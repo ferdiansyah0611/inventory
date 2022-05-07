@@ -173,9 +173,12 @@ class ProductController extends BaseController
 			return redirect()->back();
 		}
 		$model = $this->model->where('id', $id);
-		$path = ROOTPATH . 'public' . $model->first()['image'];
-		if(file_exists($path)){
-	    	unlink($path);
+		$first = $model->first();
+		if (isset($first['image'])) {
+			$path = ROOTPATH . 'public' . $first['image'];
+			if(file_exists($path)){
+		    	unlink($path);
+			}
 		}
 	    $delete = new Product();
 		$delete->where('id', $id)->delete();
@@ -184,8 +187,8 @@ class ProductController extends BaseController
 	public function search()
 	{
 		$model = $this->model
-			->like('id', $_GET['term'])
-			->orLike('name', $_GET['term'])
+			->like('id', $this->request->getGet('term'))
+			->orLike('name', $this->request->getGet('term'))
 			->limit(10)
 			->find();
 		return json_encode($model);
