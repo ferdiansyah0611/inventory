@@ -33,7 +33,8 @@
 		}
 	},
 	"scripts": {
-		"test": "phpunit"
+		"test": "phpunit",
+		"reset": "php spark migrate && php spark db:seed Test"
 	},
 	"support": {
 		"forum": "http://forum.codeigniter.com/",
