@@ -1,7 +1,5 @@
 <?php
 
-namespace CodeIgniter;
-
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
 use CodeIgniter\Test\CIUnitTestCase;
@@ -13,37 +11,40 @@ class DefaultHttpTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-    }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
-    public function testPage()
-    {
         $session = [
             'id' => 1,
             'username' => 'admin',
             'email' => 'admin@gmail.com',
             'role' => 'admin',
         ];
-        $resource = ['brand', 'spend', 'category', 'user', 'order', 'product'];
-        $json = ['brand', 'spend', 'category', 'user', 'order', 'product', 'product/alert', 'order/request', 'customer', 'worker', 'spend'];
+        $this->withSession($session);
 
         $filesize = filesize('./tests/http/init.png');
         $fp = fopen('./tests/http/init.png', 'rb');
         $binary = fread($fp, $filesize);
 
+        $this->fp = $fp;
+        $this->binary = $binary;
+        $this->resource = ['brand', 'spend', 'category', 'user', 'order', 'product'];
+        $this->json = ['brand', 'spend', 'category', 'user', 'order', 'product', 'product/alert', 'order/request', 'customer', 'worker', 'spend'];
+    }
 
-        $this->withSession($session);
+    protected function tearDown(): void
+    {
+        fclose($this->fp);
+        parent::tearDown();
+    }
+
+    public function testGet()
+    {
         // resource
-        for ($i=0; $i < sizeof($resource); $i++) { 
-            $this->get('/' . $resource[$i])->assertOK();
+        for ($i=0; $i < sizeof($this->resource); $i++) { 
+            $this->get('/' . $this->resource[$i])->assertOK();
         }
         // json
-        for ($i=0; $i < sizeof($resource); $i++) { 
-            $this->get('/' . $resource[$i] . '/json')->assertOK();
+        for ($i=0; $i < sizeof($this->json); $i++) { 
+            $this->get('/' . $this->json[$i] . '/json')->assertOK();
         }
         // chart
         $this->get('/chart/order')->assertOK();
@@ -56,8 +57,10 @@ class DefaultHttpTest extends CIUnitTestCase
         $this->get('/customer')->assertOK();
         $this->get('/worker')->assertOK();
         $this->get('/profile')->assertOK();
+    }
 
-        // add
+    public function testAdd()
+    {
         $this->post('/user', [
             'username' => 'ferdiansyah',
             'email' => 'hello@gmail.com',
@@ -92,10 +95,11 @@ class DefaultHttpTest extends CIUnitTestCase
             'rate' => 1000,
             'quantity' => 10,
             'status' => 'Available',
-            'image' => $binary
+            'image' => $this->binary
         ])->assertOK();
-
-        // update
+    }
+    public function testUpdate()
+    {
         $this->post('/user', [
             'id' => 1,
             'username' => 'ferdiansyah 1',
@@ -135,14 +139,13 @@ class DefaultHttpTest extends CIUnitTestCase
             'rate' => 1000,
             'quantity' => 10,
             'status' => 'Available',
-            'image' => $binary
+            'image' => $this->binary
         ])->assertOK();
-
-        for ($i=0; $i < sizeof($resource); $i++) { 
-            $this->get('/' . $resource[$i])->assertOK();
-            $this->delete('/' . $resource[$i] . '/10')->assertOK();
+    }
+    public function testDelete()
+    {
+        for ($i=0; $i < sizeof($this->resource); $i++) { 
+            $this->delete('/' . $this->resource[$i] . '/10')->assertOK();
         }
-
-        fclose($fp);
     }
 }
