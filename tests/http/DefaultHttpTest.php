@@ -40,23 +40,23 @@ class DefaultHttpTest extends CIUnitTestCase
     {
         // resource
         for ($i=0; $i < sizeof($this->resource); $i++) { 
-            $this->get('/' . $this->resource[$i])->assertOK();
+            $this->get('/' . $this->resource[$i])->assertStatus(200);
         }
         // json
         for ($i=0; $i < sizeof($this->json); $i++) { 
-            $this->get('/' . $this->json[$i] . '/json')->assertOK();
+            $this->get('/' . $this->json[$i] . '/json')->assertStatus(200);
         }
         // chart
-        $this->get('/chart/order')->assertOK();
-        $this->get('/chart/price-last')->assertOK();
+        $this->get('/chart/order')->assertStatus(200);
+        $this->get('/chart/price-last')->assertStatus(200);
         // search
-        $this->get('/customer/search?term=test')->assertOK();
-        $this->get('/product/search?term=test')->assertOK();
+        $this->get('/customer/search?term=test')->assertStatus(200);
+        $this->get('/product/search?term=test')->assertStatus(200);
 
-        $this->get('/product/alert')->assertOK();
-        $this->get('/customer')->assertOK();
-        $this->get('/worker')->assertOK();
-        $this->get('/profile')->assertOK();
+        $this->get('/product/alert')->assertStatus(200);
+        $this->get('/customer')->assertStatus(200);
+        $this->get('/worker')->assertStatus(200);
+        $this->get('/profile')->assertStatus(200);
     }
 
     public function testAdd()
@@ -66,15 +66,15 @@ class DefaultHttpTest extends CIUnitTestCase
             'email' => 'hello@gmail.com',
             'password' => 'people-tested',
             'role' => 'admin'
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/brand', [
             'name' => 'iphone',
             'status' => 'Available'
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/category', [
             'name' => 'smartphone',
             'status' => 'Available'
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/order', [
             'product_id' => '1',
             'customer_id' => '1',
@@ -85,8 +85,9 @@ class DefaultHttpTest extends CIUnitTestCase
             'payment_type' => 'bca',
             'payment_status' => 'Success',
             'payment_place' => '-',
+            'code' => null,
             'order_at' => date("Y-m-d H:i:s"),
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/product', [
             'brand_id' => '1',
             'category_id' => '1',
@@ -96,7 +97,7 @@ class DefaultHttpTest extends CIUnitTestCase
             'quantity' => 10,
             'status' => 'Available',
             'image' => $this->binary
-        ])->assertOK();
+        ])->assertStatus(302);
     }
     public function testUpdate()
     {
@@ -106,17 +107,17 @@ class DefaultHttpTest extends CIUnitTestCase
             'email' => 'hello@gmail.com',
             'password' => 'people-tested',
             'role' => 'admin'
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/brand', [
             'id' => 1,
             'name' => 'iphone +',
             'status' => 'Available'
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/category', [
             'id' => 1,
             'name' => 'smartphone',
             'status' => 'Available'
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/order', [
             'id' => 1,
             'product_id' => '1',
@@ -129,7 +130,7 @@ class DefaultHttpTest extends CIUnitTestCase
             'payment_status' => 'Success',
             'payment_place' => '-',
             'order_at' => date("Y-m-d H:i:s"),
-        ])->assertOK();
+        ])->assertStatus(302);
         $this->post('/product', [
             'id' => 1,
             'brand_id' => '1',
@@ -140,12 +141,12 @@ class DefaultHttpTest extends CIUnitTestCase
             'quantity' => 10,
             'status' => 'Available',
             'image' => $this->binary
-        ])->assertOK();
+        ])->assertStatus(302);
     }
     public function testDelete()
     {
         for ($i=0; $i < sizeof($this->resource); $i++) { 
-            $this->delete('/' . $this->resource[$i] . '/10')->assertOK();
+            $this->delete('/' . $this->resource[$i] . '/10')->assertStatus(302);
         }
     }
 }
